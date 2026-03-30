@@ -527,6 +527,20 @@ export class Terminal implements ITerminalCore {
 
       // Focus input (auto-focus so user can start typing immediately)
       this.focus();
+
+      // Remeasure font metrics once web fonts finish loading.
+      // The initial measureFont() call happens synchronously and may use a
+      // fallback font if the custom font (e.g. JetBrains Mono) hasn't loaded
+      // yet. Once fonts are ready we remeasure and resize the canvas so cell
+      // dimensions are correct.
+      if (typeof document !== 'undefined' && document.fonts) {
+        document.fonts.ready.then(() => {
+          if (this.isOpen && this.renderer) {
+            this.renderer.remeasureFont();
+            this.handleFontChange();
+          }
+        });
+      }
     } catch (error) {
       // Clean up on error
       this.isOpen = false;
