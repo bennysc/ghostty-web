@@ -9,6 +9,7 @@ export declare class CanvasRenderer {
     private devicePixelRatio;
     private metrics;
     private palette;
+    private glyphCache;
     private cursorVisible;
     private cursorBlinkInterval?;
     private lastCursorPosition;
