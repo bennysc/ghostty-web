@@ -88,6 +88,79 @@ export const DEFAULT_THEME: Required<ITheme> = {
 };
 
 // ============================================================================
+// Glyph Cache — pre-renders glyphs to offscreen canvases for drawImage() blitting
+// ============================================================================
+
+const GLYPH_CACHE_MAX = 4096;
+
+class GlyphCache {
+  private cache = new Map<string, OffscreenCanvas>();
+  private dpr: number;
+
+  constructor(dpr: number) {
+    this.dpr = dpr;
+  }
+
+  /** Build a cache key from char + color + font descriptor. */
+  static key(char: string, color: string, fontDesc: string): string {
+    return `${char}\x00${color}\x00${fontDesc}`;
+  }
+
+  get(key: string): OffscreenCanvas | undefined {
+    return this.cache.get(key);
+  }
+
+  put(
+    key: string,
+    char: string,
+    color: string,
+    fontDesc: string,
+    cellWidth: number,
+    cellHeight: number,
+    baseline: number,
+  ): OffscreenCanvas {
+    // Evict oldest entries if at capacity
+    if (this.cache.size >= GLYPH_CACHE_MAX) {
+      // Delete first quarter of entries (LRU approximation via insertion order)
+      const toDelete = GLYPH_CACHE_MAX >> 2;
+      let i = 0;
+      for (const k of this.cache.keys()) {
+        if (i++ >= toDelete) break;
+        this.cache.delete(k);
+      }
+    }
+
+    const w = cellWidth * this.dpr;
+    const h = cellHeight * this.dpr;
+    const oc = new OffscreenCanvas(w, h);
+    const ctx = oc.getContext('2d')!;
+
+    // Scale for DPR so text is rendered at native resolution
+    ctx.scale(this.dpr, this.dpr);
+    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'left';
+    ctx.font = fontDesc;
+    ctx.fillStyle = color;
+    ctx.fillText(char, 0, baseline);
+
+    this.cache.set(key, oc);
+    return oc;
+  }
+
+  /** Flush the entire cache (call on font/theme change). */
+  clear(): void {
+    this.cache.clear();
+  }
+
+  setDpr(dpr: number): void {
+    if (dpr !== this.dpr) {
+      this.dpr = dpr;
+      this.clear();
+    }
+  }
+}
+
+// ============================================================================
 // CanvasRenderer Class
 // ============================================================================
 
@@ -102,6 +175,9 @@ export class CanvasRenderer {
   private devicePixelRatio: number;
   private metrics: FontMetrics;
   private palette: string[];
+
+  // Glyph cache for pre-rendered characters
+  private glyphCache: GlyphCache;
 
   // Cursor blinking state
   private cursorVisible: boolean = true;
@@ -176,6 +252,9 @@ export class CanvasRenderer {
 
     // Measure font metrics
     this.metrics = this.measureFont();
+
+    // Initialize glyph cache
+    this.glyphCache = new GlyphCache(this.devicePixelRatio);
 
     // Setup cursor blinking if enabled
     if (this.cursorBlink) {
@@ -634,20 +713,43 @@ export class CanvasRenderer {
       this.ctx.globalAlpha = 0.5;
     }
 
-    // Draw text
-    const textX = cellX;
-    const textY = cellY + this.metrics.baseline;
-
     // Get the character to render - use grapheme lookup for complex scripts
     let char: string;
     if (cell.grapheme_len > 0 && this.currentBuffer?.getGraphemeString) {
-      // Cell has additional codepoints - get full grapheme cluster
       char = this.currentBuffer.getGraphemeString(y, x);
     } else {
-      // Simple cell - single codepoint
-      char = String.fromCodePoint(cell.codepoint || 32); // Default to space if null
+      char = String.fromCodePoint(cell.codepoint || 32);
     }
-    this.ctx.fillText(char, textX, textY);
+
+    // Skip spaces — nothing to draw
+    if (char === ' ') {
+      if (cell.flags & CellFlags.FAINT) this.ctx.globalAlpha = 1.0;
+      // Still need to fall through to decorations below
+    } else {
+      // Draw text via glyph cache (single-codepoint, no faint) or direct fillText
+      const color = this.ctx.fillStyle as string;
+      const fontDesc = this.ctx.font;
+      const usable =
+        cell.grapheme_len === 0 &&
+        !(cell.flags & CellFlags.FAINT) &&
+        cell.width === 1;
+
+      if (usable) {
+        const key = GlyphCache.key(char, color, fontDesc);
+        let glyph = this.glyphCache.get(key);
+        if (!glyph) {
+          glyph = this.glyphCache.put(
+            key, char, color, fontDesc,
+            this.metrics.width, this.metrics.height, this.metrics.baseline,
+          );
+        }
+        // Blit the pre-rendered glyph at exact pixel position
+        this.ctx.drawImage(glyph, cellX, cellY, this.metrics.width, this.metrics.height);
+      } else {
+        // Fallback: wide chars, grapheme clusters, faint text — use fillText directly
+        this.ctx.fillText(char, cellX, cellY + this.metrics.baseline);
+      }
+    }
 
     // Reset alpha
     if (cell.flags & CellFlags.FAINT) {
@@ -788,6 +890,7 @@ export class CanvasRenderer {
    */
   public setTheme(theme: ITheme): void {
     this.theme = { ...DEFAULT_THEME, ...theme };
+    this.glyphCache.clear();
 
     // Rebuild palette
     this.palette = [
@@ -816,6 +919,7 @@ export class CanvasRenderer {
   public setFontSize(size: number): void {
     this.fontSize = size;
     this.metrics = this.measureFont();
+    this.glyphCache.clear();
   }
 
   /**
@@ -824,6 +928,7 @@ export class CanvasRenderer {
   public setFontFamily(family: string): void {
     this.fontFamily = family;
     this.metrics = this.measureFont();
+    this.glyphCache.clear();
   }
 
   /**
@@ -997,5 +1102,6 @@ export class CanvasRenderer {
    */
   public dispose(): void {
     this.stopCursorBlink();
+    this.glyphCache.clear();
   }
 }
