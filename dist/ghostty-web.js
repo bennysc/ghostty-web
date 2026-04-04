@@ -1,6 +1,6 @@
 var H = /* @__PURE__ */ ((B) => (B[B.CURSOR_KEY_APPLICATION = 0] = "CURSOR_KEY_APPLICATION", B[B.KEYPAD_KEY_APPLICATION = 1] = "KEYPAD_KEY_APPLICATION", B[B.IGNORE_KEYPAD_WITH_NUMLOCK = 2] = "IGNORE_KEYPAD_WITH_NUMLOCK", B[B.ALT_ESC_PREFIX = 3] = "ALT_ESC_PREFIX", B[B.MODIFY_OTHER_KEYS_STATE_2 = 4] = "MODIFY_OTHER_KEYS_STATE_2", B[B.KITTY_KEYBOARD_FLAGS = 5] = "KITTY_KEYBOARD_FLAGS", B))(H || {}), V = /* @__PURE__ */ ((B) => (B[B.RELEASE = 0] = "RELEASE", B[B.PRESS = 1] = "PRESS", B[B.REPEAT = 2] = "REPEAT", B))(V || {}), i = /* @__PURE__ */ ((B) => (B[B.UNIDENTIFIED = 0] = "UNIDENTIFIED", B[B.GRAVE = 1] = "GRAVE", B[B.BACKSLASH = 2] = "BACKSLASH", B[B.BRACKET_LEFT = 3] = "BRACKET_LEFT", B[B.BRACKET_RIGHT = 4] = "BRACKET_RIGHT", B[B.COMMA = 5] = "COMMA", B[B.ZERO = 6] = "ZERO", B[B.ONE = 7] = "ONE", B[B.TWO = 8] = "TWO", B[B.THREE = 9] = "THREE", B[B.FOUR = 10] = "FOUR", B[B.FIVE = 11] = "FIVE", B[B.SIX = 12] = "SIX", B[B.SEVEN = 13] = "SEVEN", B[B.EIGHT = 14] = "EIGHT", B[B.NINE = 15] = "NINE", B[B.EQUAL = 16] = "EQUAL", B[B.INTL_BACKSLASH = 17] = "INTL_BACKSLASH", B[B.INTL_RO = 18] = "INTL_RO", B[B.INTL_YEN = 19] = "INTL_YEN", B[B.A = 20] = "A", B[B.B = 21] = "B", B[B.C = 22] = "C", B[B.D = 23] = "D", B[B.E = 24] = "E", B[B.F = 25] = "F", B[B.G = 26] = "G", B[B.H = 27] = "H", B[B.I = 28] = "I", B[B.J = 29] = "J", B[B.K = 30] = "K", B[B.L = 31] = "L", B[B.M = 32] = "M", B[B.N = 33] = "N", B[B.O = 34] = "O", B[B.P = 35] = "P", B[B.Q = 36] = "Q", B[B.R = 37] = "R", B[B.S = 38] = "S", B[B.T = 39] = "T", B[B.U = 40] = "U", B[B.V = 41] = "V", B[B.W = 42] = "W", B[B.X = 43] = "X", B[B.Y = 44] = "Y", B[B.Z = 45] = "Z", B[B.MINUS = 46] = "MINUS", B[B.PERIOD = 47] = "PERIOD", B[B.QUOTE = 48] = "QUOTE", B[B.SEMICOLON = 49] = "SEMICOLON", B[B.SLASH = 50] = "SLASH", B[B.ALT_LEFT = 51] = "ALT_LEFT", B[B.ALT_RIGHT = 52] = "ALT_RIGHT", B[B.BACKSPACE = 53] = "BACKSPACE", B[B.CAPS_LOCK = 54] = "CAPS_LOCK", B[B.CONTEXT_MENU = 55] = "CONTEXT_MENU", B[B.CONTROL_LEFT = 56] = "CONTROL_LEFT", B[B.CONTROL_RIGHT = 57] = "CONTROL_RIGHT", B[B.ENTER = 58] = "ENTER", B[B.META_LEFT = 59] = "META_LEFT", B[B.META_RIGHT = 60] = "META_RIGHT", B[B.SHIFT_LEFT = 61] = "SHIFT_LEFT", B[B.SHIFT_RIGHT = 62] = "SHIFT_RIGHT", B[B.SPACE = 63] = "SPACE", B[B.TAB = 64] = "TAB", B[B.CONVERT = 65] = "CONVERT", B[B.KANA_MODE = 66] = "KANA_MODE", B[B.NON_CONVERT = 67] = "NON_CONVERT", B[B.DELETE = 68] = "DELETE", B[B.END = 69] = "END", B[B.HELP = 70] = "HELP", B[B.HOME = 71] = "HOME", B[B.INSERT = 72] = "INSERT", B[B.PAGE_DOWN = 73] = "PAGE_DOWN", B[B.PAGE_UP = 74] = "PAGE_UP", B[B.DOWN = 75] = "DOWN", B[B.LEFT = 76] = "LEFT", B[B.RIGHT = 77] = "RIGHT", B[B.UP = 78] = "UP", B[B.NUM_LOCK = 79] = "NUM_LOCK", B[B.KP_0 = 80] = "KP_0", B[B.KP_1 = 81] = "KP_1", B[B.KP_2 = 82] = "KP_2", B[B.KP_3 = 83] = "KP_3", B[B.KP_4 = 84] = "KP_4", B[B.KP_5 = 85] = "KP_5", B[B.KP_6 = 86] = "KP_6", B[B.KP_7 = 87] = "KP_7", B[B.KP_8 = 88] = "KP_8", B[B.KP_9 = 89] = "KP_9", B[B.KP_PLUS = 90] = "KP_PLUS", B[B.KP_BACKSPACE = 91] = "KP_BACKSPACE", B[B.KP_CLEAR = 92] = "KP_CLEAR", B[B.KP_CLEAR_ENTRY = 93] = "KP_CLEAR_ENTRY", B[B.KP_COMMA = 94] = "KP_COMMA", B[B.KP_PERIOD = 95] = "KP_PERIOD", B[B.KP_DIVIDE = 96] = "KP_DIVIDE", B[B.KP_ENTER = 97] = "KP_ENTER", B[B.KP_EQUAL = 98] = "KP_EQUAL", B[B.KP_MEMORY_ADD = 99] = "KP_MEMORY_ADD", B[B.KP_MEMORY_CLEAR = 100] = "KP_MEMORY_CLEAR", B[B.KP_MEMORY_RECALL = 101] = "KP_MEMORY_RECALL", B[B.KP_MEMORY_STORE = 102] = "KP_MEMORY_STORE", B[B.KP_MEMORY_SUBTRACT = 103] = "KP_MEMORY_SUBTRACT", B[B.KP_MULTIPLY = 104] = "KP_MULTIPLY", B[B.KP_PAREN_LEFT = 105] = "KP_PAREN_LEFT", B[B.KP_PAREN_RIGHT = 106] = "KP_PAREN_RIGHT", B[B.KP_MINUS = 107] = "KP_MINUS", B[B.KP_SEPARATOR = 108] = "KP_SEPARATOR", B[B.NUMPAD_UP = 109] = "NUMPAD_UP", B[B.NUMPAD_DOWN = 110] = "NUMPAD_DOWN", B[B.NUMPAD_RIGHT = 111] = "NUMPAD_RIGHT", B[B.NUMPAD_LEFT = 112] = "NUMPAD_LEFT", B[B.NUMPAD_BEGIN = 113] = "NUMPAD_BEGIN", B[B.NUMPAD_HOME = 114] = "NUMPAD_HOME", B[B.NUMPAD_END = 115] = "NUMPAD_END", B[B.NUMPAD_INSERT = 116] = "NUMPAD_INSERT", B[B.NUMPAD_DELETE = 117] = "NUMPAD_DELETE", B[B.NUMPAD_PAGE_UP = 118] = "NUMPAD_PAGE_UP", B[B.NUMPAD_PAGE_DOWN = 119] = "NUMPAD_PAGE_DOWN", B[B.ESCAPE = 120] = "ESCAPE", B[B.F1 = 121] = "F1", B[B.F2 = 122] = "F2", B[B.F3 = 123] = "F3", B[B.F4 = 124] = "F4", B[B.F5 = 125] = "F5", B[B.F6 = 126] = "F6", B[B.F7 = 127] = "F7", B[B.F8 = 128] = "F8", B[B.F9 = 129] = "F9", B[B.F10 = 130] = "F10", B[B.F11 = 131] = "F11", B[B.F12 = 132] = "F12", B[B.F13 = 133] = "F13", B[B.F14 = 134] = "F14", B[B.F15 = 135] = "F15", B[B.F16 = 136] = "F16", B[B.F17 = 137] = "F17", B[B.F18 = 138] = "F18", B[B.F19 = 139] = "F19", B[B.F20 = 140] = "F20", B[B.F21 = 141] = "F21", B[B.F22 = 142] = "F22", B[B.F23 = 143] = "F23", B[B.F24 = 144] = "F24", B[B.F25 = 145] = "F25", B[B.FN_LOCK = 146] = "FN_LOCK", B[B.PRINT_SCREEN = 147] = "PRINT_SCREEN", B[B.SCROLL_LOCK = 148] = "SCROLL_LOCK", B[B.PAUSE = 149] = "PAUSE", B[B.BROWSER_BACK = 150] = "BROWSER_BACK", B[B.BROWSER_FAVORITES = 151] = "BROWSER_FAVORITES", B[B.BROWSER_FORWARD = 152] = "BROWSER_FORWARD", B[B.BROWSER_HOME = 153] = "BROWSER_HOME", B[B.BROWSER_REFRESH = 154] = "BROWSER_REFRESH", B[B.BROWSER_SEARCH = 155] = "BROWSER_SEARCH", B[B.BROWSER_STOP = 156] = "BROWSER_STOP", B[B.EJECT = 157] = "EJECT", B[B.LAUNCH_APP_1 = 158] = "LAUNCH_APP_1", B[B.LAUNCH_APP_2 = 159] = "LAUNCH_APP_2", B[B.LAUNCH_MAIL = 160] = "LAUNCH_MAIL", B[B.MEDIA_PLAY_PAUSE = 161] = "MEDIA_PLAY_PAUSE", B[B.MEDIA_SELECT = 162] = "MEDIA_SELECT", B[B.MEDIA_STOP = 163] = "MEDIA_STOP", B[B.MEDIA_TRACK_NEXT = 164] = "MEDIA_TRACK_NEXT", B[B.MEDIA_TRACK_PREVIOUS = 165] = "MEDIA_TRACK_PREVIOUS", B[B.POWER = 166] = "POWER", B[B.SLEEP = 167] = "SLEEP", B[B.AUDIO_VOLUME_DOWN = 168] = "AUDIO_VOLUME_DOWN", B[B.AUDIO_VOLUME_MUTE = 169] = "AUDIO_VOLUME_MUTE", B[B.AUDIO_VOLUME_UP = 170] = "AUDIO_VOLUME_UP", B[B.WAKE_UP = 171] = "WAKE_UP", B[B.COPY = 172] = "COPY", B[B.CUT = 173] = "CUT", B[B.PASTE = 174] = "PASTE", B))(i || {}), r = /* @__PURE__ */ ((B) => (B[B.NONE = 0] = "NONE", B[B.SHIFT = 1] = "SHIFT", B[B.CTRL = 2] = "CTRL", B[B.ALT = 4] = "ALT", B[B.SUPER = 8] = "SUPER", B[B.CAPSLOCK = 16] = "CAPSLOCK", B[B.NUMLOCK = 32] = "NUMLOCK", B))(r || {}), S = /* @__PURE__ */ ((B) => (B[B.NONE = 0] = "NONE", B[B.PARTIAL = 1] = "PARTIAL", B[B.FULL = 2] = "FULL", B))(S || {});
 const f = 80;
-var F = /* @__PURE__ */ ((B) => (B[B.BOLD = 1] = "BOLD", B[B.ITALIC = 2] = "ITALIC", B[B.UNDERLINE = 4] = "UNDERLINE", B[B.STRIKETHROUGH = 8] = "STRIKETHROUGH", B[B.INVERSE = 16] = "INVERSE", B[B.INVISIBLE = 32] = "INVISIBLE", B[B.BLINK = 64] = "BLINK", B[B.FAINT = 128] = "FAINT", B))(F || {});
+var G = /* @__PURE__ */ ((B) => (B[B.BOLD = 1] = "BOLD", B[B.ITALIC = 2] = "ITALIC", B[B.UNDERLINE = 4] = "UNDERLINE", B[B.STRIKETHROUGH = 8] = "STRIKETHROUGH", B[B.INVERSE = 16] = "INVERSE", B[B.INVISIBLE = 32] = "INVISIBLE", B[B.BLINK = 64] = "BLINK", B[B.FAINT = 128] = "FAINT", B))(G || {});
 class q {
   constructor(A) {
     this.exports = A.exports, this.memory = this.exports.memory;
@@ -89,8 +89,8 @@ class P {
       throw new Error(`Failed to create key event: ${g}`);
     const E = new DataView(this.exports.memory.buffer), C = E.getUint32(Q, !0);
     if (this.exports.ghostty_wasm_free_opaque(Q), this.exports.ghostty_key_event_set_action(C, A.action), this.exports.ghostty_key_event_set_key(C, A.key), this.exports.ghostty_key_event_set_mods(C, A.mods), A.utf8) {
-      const h = new TextEncoder().encode(A.utf8), a = this.exports.ghostty_wasm_alloc_u8_array(h.length);
-      new Uint8Array(this.exports.memory.buffer).set(h, a), this.exports.ghostty_key_event_set_utf8(C, a, h.length), this.exports.ghostty_wasm_free_u8_array(a, h.length);
+      const N = new TextEncoder().encode(A.utf8), h = this.exports.ghostty_wasm_alloc_u8_array(N.length);
+      new Uint8Array(this.exports.memory.buffer).set(N, h), this.exports.ghostty_key_event_set_utf8(C, h, N.length), this.exports.ghostty_wasm_free_u8_array(h, N.length);
     }
     const I = 32, D = this.exports.ghostty_wasm_alloc_u8_array(I), o = this.exports.ghostty_wasm_alloc_usize(), w = this.exports.ghostty_key_encoder_encode(
       this.encoder,
@@ -101,8 +101,8 @@ class P {
     );
     if (w !== 0)
       throw this.exports.ghostty_wasm_free_u8_array(D, I), this.exports.ghostty_wasm_free_usize(o), this.exports.ghostty_key_event_free(C), new Error(`Failed to encode key: ${w}`);
-    const s = E.getUint32(o, !0), M = new Uint8Array(this.exports.memory.buffer, D, s).slice();
-    return this.exports.ghostty_wasm_free_u8_array(D, I), this.exports.ghostty_wasm_free_usize(o), this.exports.ghostty_key_event_free(C), M;
+    const s = E.getUint32(o, !0), a = new Uint8Array(this.exports.memory.buffer, D, s).slice();
+    return this.exports.ghostty_wasm_free_u8_array(D, I), this.exports.ghostty_wasm_free_usize(o), this.exports.ghostty_key_event_free(C), a;
   }
   dispose() {
     this.encoder && (this.exports.ghostty_key_encoder_free(this.encoder), this.encoder = 0);
@@ -519,7 +519,7 @@ const W = class K {
 };
 W.CELL_SIZE = 16;
 let v = W;
-class U {
+class J {
   constructor() {
     this.listeners = [], this.event = (A) => (this.listeners.push(A), {
       dispose: () => {
@@ -538,7 +538,7 @@ class U {
 }
 class X {
   constructor(A) {
-    this.bufferChangeEmitter = new U(), this.terminal = A;
+    this.bufferChangeEmitter = new J(), this.terminal = A;
   }
   get active() {
     const A = this.terminal.wasmTerm;
@@ -690,28 +690,28 @@ class O {
     return this.cell.bg_r << 16 | this.cell.bg_g << 8 | this.cell.bg_b;
   }
   isBold() {
-    return this.cell.flags & F.BOLD ? 1 : 0;
+    return this.cell.flags & G.BOLD ? 1 : 0;
   }
   isItalic() {
-    return this.cell.flags & F.ITALIC ? 1 : 0;
+    return this.cell.flags & G.ITALIC ? 1 : 0;
   }
   isUnderline() {
-    return this.cell.flags & F.UNDERLINE ? 1 : 0;
+    return this.cell.flags & G.UNDERLINE ? 1 : 0;
   }
   isStrikethrough() {
-    return this.cell.flags & F.STRIKETHROUGH ? 1 : 0;
+    return this.cell.flags & G.STRIKETHROUGH ? 1 : 0;
   }
   isBlink() {
-    return this.cell.flags & F.BLINK ? 1 : 0;
+    return this.cell.flags & G.BLINK ? 1 : 0;
   }
   isInverse() {
-    return this.cell.flags & F.INVERSE ? 1 : 0;
+    return this.cell.flags & G.INVERSE ? 1 : 0;
   }
   isInvisible() {
-    return this.cell.flags & F.INVISIBLE ? 1 : 0;
+    return this.cell.flags & G.INVISIBLE ? 1 : 0;
   }
   isFaint() {
-    return this.cell.flags & F.FAINT ? 1 : 0;
+    return this.cell.flags & G.FAINT ? 1 : 0;
   }
   /**
    * Get hyperlink ID for this cell (0 = no link)
@@ -732,7 +732,7 @@ class O {
    * Added for IBufferCell compatibility
    */
   isDim() {
-    return (this.cell.flags & F.FAINT) !== 0;
+    return (this.cell.flags & G.FAINT) !== 0;
   }
 }
 const $ = {
@@ -1183,8 +1183,8 @@ const $ = {
     if (D)
       o = this.encodeMouseSGR(A, Q, g, E, I);
     else {
-      const M = E ? 3 : A;
-      o = this.encodeMouseX10(M, Q, g, I);
+      const a = E ? 3 : A;
+      o = this.encodeMouseX10(a, Q, g, I);
     }
     this.onDataCallback(o);
   }
@@ -1447,26 +1447,26 @@ class BA {
       if (!D || D.getHyperlinkId() === 0 || !this.terminal.wasmTerm)
         continue;
       const w = this.terminal.wasmTerm.getScrollbackLength(), s = A - w;
-      let M;
-      if (s < 0 ? M = this.terminal.wasmTerm.getScrollbackHyperlinkUri(A, I) : M = this.terminal.wasmTerm.getHyperlinkUri(s, I), M) {
+      let a;
+      if (s < 0 ? a = this.terminal.wasmTerm.getScrollbackHyperlinkUri(A, I) : a = this.terminal.wasmTerm.getHyperlinkUri(s, I), a) {
         let t = I;
-        for (let a = I + 1; a < C.length; a++) {
-          const N = C.getCell(a);
-          if (!N || N.getHyperlinkId() === 0 || (s < 0 ? this.terminal.wasmTerm.getScrollbackHyperlinkUri(A, a) : this.terminal.wasmTerm.getHyperlinkUri(s, a)) !== M)
+        for (let h = I + 1; h < C.length; h++) {
+          const e = C.getCell(h);
+          if (!e || e.getHyperlinkId() === 0 || (s < 0 ? this.terminal.wasmTerm.getScrollbackHyperlinkUri(A, h) : this.terminal.wasmTerm.getHyperlinkUri(s, h)) !== a)
             break;
-          t = a;
+          t = h;
         }
-        for (let a = I; a <= t; a++)
-          E.add(a);
-        const h = {
+        for (let h = I; h <= t; h++)
+          E.add(h);
+        const N = {
           start: { x: I, y: A },
           end: { x: t, y: A }
         };
         g.push({
-          text: M,
-          range: h,
-          activate: (a) => {
-            (a.ctrlKey || a.metaKey) && window.open(M, "_blank", "noopener,noreferrer");
+          text: a,
+          range: N,
+          activate: (h) => {
+            (h.ctrlKey || h.metaKey) && window.open(a, "_blank", "noopener,noreferrer");
           }
         });
       }
@@ -1484,25 +1484,25 @@ class BA {
       const s = E.getLine(C);
       if (!s)
         break;
-      const M = s.getCell(I - 1);
-      if (!M || M.getHyperlinkId() !== A)
+      const a = s.getCell(I - 1);
+      if (!a || a.getHyperlinkId() !== A)
         break;
       I--;
     }
     if (I === 0 && C > 0) {
       let s = C - 1;
       for (; s >= 0; ) {
-        const M = E.getLine(s);
-        if (!M || M.length === 0)
+        const a = E.getLine(s);
+        if (!a || a.length === 0)
           break;
-        const t = M.getCell(M.length - 1);
+        const t = a.getCell(a.length - 1);
         if (!t || t.getHyperlinkId() !== A)
           break;
         C = s, I = 0;
-        for (let h = M.length - 1; h >= 0; h--) {
-          const a = M.getCell(h);
-          if (!a || a.getHyperlinkId() !== A) {
-            I = h + 1;
+        for (let N = a.length - 1; N >= 0; N--) {
+          const h = a.getCell(N);
+          if (!h || h.getHyperlinkId() !== A) {
+            I = N + 1;
             break;
           }
         }
@@ -1523,24 +1523,24 @@ class BA {
       }
       if (o === w.length - 1) {
         let s = D + 1;
-        const M = E.length;
-        for (; s < M; ) {
+        const a = E.length;
+        for (; s < a; ) {
           const t = E.getLine(s);
           if (!t || t.length === 0)
             break;
-          const h = t.getCell(0);
-          if (!h || h.getHyperlinkId() !== A)
+          const N = t.getCell(0);
+          if (!N || N.getHyperlinkId() !== A)
             break;
           D = s, o = 0;
-          for (let a = 0; a < t.length; a++) {
-            const N = t.getCell(a);
-            if (!N)
+          for (let h = 0; h < t.length; h++) {
+            const e = t.getCell(h);
+            if (!e)
               break;
-            if (N.getHyperlinkId() !== A) {
-              o = a - 1;
+            if (e.getHyperlinkId() !== A) {
+              o = h - 1;
               break;
             }
-            o = a;
+            o = h;
           }
           if (o === t.length - 1)
             s++;
@@ -1584,8 +1584,8 @@ const p = class n {
           start: { x: o, y: A },
           end: { x: w, y: A }
         },
-        activate: (M) => {
-          (M.ctrlKey || M.metaKey) && window.open(D, "_blank", "noopener,noreferrer");
+        activate: (a) => {
+          (a.ctrlKey || a.metaKey) && window.open(D, "_blank", "noopener,noreferrer");
         }
       }), I = n.URL_REGEX.exec(C);
     }
@@ -1653,15 +1653,15 @@ class z {
   put(A, Q, g, E, C, I, D) {
     if (this.cache.size >= u) {
       const t = u >> 2;
-      let h = 0;
-      for (const a of this.cache.keys()) {
-        if (h++ >= t)
+      let N = 0;
+      for (const h of this.cache.keys()) {
+        if (N++ >= t)
           break;
-        this.cache.delete(a);
+        this.cache.delete(h);
       }
     }
-    const o = C * this.dpr, w = I * this.dpr, s = new OffscreenCanvas(o, w), M = s.getContext("2d");
-    return M.scale(this.dpr, this.dpr), M.textBaseline = "alphabetic", M.textAlign = "left", M.font = E, M.fillStyle = g, M.fillText(Q, 0, D), this.cache.set(A, s), s;
+    const o = C * this.dpr, w = I * this.dpr, s = new OffscreenCanvas(o, w), a = s.getContext("2d");
+    return a.scale(this.dpr, this.dpr), a.textBaseline = "alphabetic", a.textAlign = "left", a.font = E, a.fillStyle = g, a.fillText(Q, 0, D), this.cache.set(A, s), s;
   }
   /** Flush the entire cache (call on font/theme change). */
   clear() {
@@ -1673,7 +1673,7 @@ class z {
 }
 class EA {
   constructor(A, Q = {}) {
-    this.cursorVisible = !0, this.lastCursorPosition = { x: 0, y: 0 }, this.lastViewportY = 0, this.currentBuffer = null, this.currentSelectionCoords = null, this.hoveredHyperlinkId = 0, this.previousHoveredHyperlinkId = 0, this.hoveredLinkRange = null, this.previousHoveredLinkRange = null, this.canvas = A;
+    this.scrollbarCanvas = null, this.scrollbarCtx = null, this.cursorVisible = !0, this.lastCursorPosition = { x: 0, y: 0 }, this.lastViewportY = 0, this.currentBuffer = null, this.currentSelectionCoords = null, this.hoveredHyperlinkId = 0, this.previousHoveredHyperlinkId = 0, this.hoveredLinkRange = null, this.previousHoveredLinkRange = null, this.canvas = A;
     const g = A.getContext("2d", { alpha: !0 });
     if (!g)
       throw new Error("Failed to get 2D rendering context");
@@ -1725,7 +1725,19 @@ class EA {
    */
   resize(A, Q) {
     const g = A * this.metrics.width, E = Q * this.metrics.height;
-    this.canvas.style.width = `${g}px`, this.canvas.style.height = `${E}px`, this.canvas.width = g * this.devicePixelRatio, this.canvas.height = E * this.devicePixelRatio, this.ctx.scale(this.devicePixelRatio, this.devicePixelRatio), this.ctx.textBaseline = "alphabetic", this.ctx.textAlign = "left", this.ctx.fillStyle = this.theme.background, this.ctx.fillRect(0, 0, g, E);
+    this.canvas.style.width = `${g}px`, this.canvas.style.height = `${E}px`, this.canvas.width = g * this.devicePixelRatio, this.canvas.height = E * this.devicePixelRatio, this.ctx.scale(this.devicePixelRatio, this.devicePixelRatio), this.ctx.textBaseline = "alphabetic", this.ctx.textAlign = "left", this.ctx.fillStyle = this.theme.background, this.ctx.fillRect(0, 0, g, E), this.scrollbarCanvas && this.scrollbarCtx && (this.scrollbarCanvas.style.width = `${g}px`, this.scrollbarCanvas.style.height = `${E}px`, this.scrollbarCanvas.width = g * this.devicePixelRatio, this.scrollbarCanvas.height = E * this.devicePixelRatio, this.scrollbarCtx.scale(this.devicePixelRatio, this.devicePixelRatio));
+  }
+  /**
+   * Attach a scrollbar overlay canvas.  The caller creates and positions
+   * the element; we just keep it sized in sync and draw into it.
+   */
+  setScrollbarCanvas(A) {
+    const Q = A.getContext("2d", { alpha: !0 });
+    if (!Q)
+      return;
+    this.scrollbarCanvas = A, this.scrollbarCtx = Q;
+    const g = this.canvas.width / this.devicePixelRatio, E = this.canvas.height / this.devicePixelRatio;
+    A.style.width = `${g}px`, A.style.height = `${E}px`, A.width = g * this.devicePixelRatio, A.height = E * this.devicePixelRatio, Q.scale(this.devicePixelRatio, this.devicePixelRatio);
   }
   // ==========================================================================
   // Main Rendering
@@ -1734,86 +1746,86 @@ class EA {
    * Render the terminal buffer to canvas
    */
   render(A, Q = !1, g = 0, E, C = 1) {
-    var G;
+    var U;
     this.currentBuffer = A;
     const I = A.getCursor(), D = A.getDimensions(), o = E ? E.getScrollbackLength() : 0;
-    (G = A.needsFullRedraw) != null && G.call(A) && (Q = !0), (this.canvas.width !== D.cols * this.metrics.width * this.devicePixelRatio || this.canvas.height !== D.rows * this.metrics.height * this.devicePixelRatio) && (this.resize(D.cols, D.rows), Q = !0), g !== this.lastViewportY && (Q = !0, this.lastViewportY = g);
+    (U = A.needsFullRedraw) != null && U.call(A) && (Q = !0), (this.canvas.width !== D.cols * this.metrics.width * this.devicePixelRatio || this.canvas.height !== D.rows * this.metrics.height * this.devicePixelRatio) && (this.resize(D.cols, D.rows), Q = !0), g !== this.lastViewportY && (Q = !0, this.lastViewportY = g);
     const s = I.x !== this.lastCursorPosition.x || I.y !== this.lastCursorPosition.y;
     if (s || this.cursorBlink) {
       if (!Q && !A.isRowDirty(I.y)) {
-        const e = A.getLine(I.y);
-        e && this.renderLine(e, I.y, D.cols);
+        const M = A.getLine(I.y);
+        M && this.renderLine(M, I.y, D.cols);
       }
       if (s && this.lastCursorPosition.y !== I.y && !Q && !A.isRowDirty(this.lastCursorPosition.y)) {
-        const e = A.getLine(this.lastCursorPosition.y);
-        e && this.renderLine(e, this.lastCursorPosition.y, D.cols);
+        const M = A.getLine(this.lastCursorPosition.y);
+        M && this.renderLine(M, this.lastCursorPosition.y, D.cols);
       }
     }
-    const M = this.selectionManager && this.selectionManager.hasSelection(), t = /* @__PURE__ */ new Set();
-    if (this.currentSelectionCoords = M ? this.selectionManager.getSelectionCoords() : null, this.currentSelectionCoords) {
-      const e = this.currentSelectionCoords;
-      for (let c = e.startRow; c <= e.endRow; c++)
+    const a = this.selectionManager && this.selectionManager.hasSelection(), t = /* @__PURE__ */ new Set();
+    if (this.currentSelectionCoords = a ? this.selectionManager.getSelectionCoords() : null, this.currentSelectionCoords) {
+      const M = this.currentSelectionCoords;
+      for (let c = M.startRow; c <= M.endRow; c++)
         t.add(c);
     }
     if (this.selectionManager) {
-      const e = this.selectionManager.getDirtySelectionRows();
-      if (e.size > 0) {
-        for (const c of e)
+      const M = this.selectionManager.getDirtySelectionRows();
+      if (M.size > 0) {
+        for (const c of M)
           t.add(c);
         this.selectionManager.clearDirtySelectionRows();
       }
     }
-    const h = /* @__PURE__ */ new Set(), a = this.hoveredHyperlinkId !== this.previousHoveredHyperlinkId, N = JSON.stringify(this.hoveredLinkRange) !== JSON.stringify(this.previousHoveredLinkRange);
-    if (a) {
-      for (let e = 0; e < D.rows; e++) {
+    const N = /* @__PURE__ */ new Set(), h = this.hoveredHyperlinkId !== this.previousHoveredHyperlinkId, e = JSON.stringify(this.hoveredLinkRange) !== JSON.stringify(this.previousHoveredLinkRange);
+    if (h) {
+      for (let M = 0; M < D.rows; M++) {
         let c = null;
         if (g > 0)
-          if (e < g && E) {
-            const J = o - Math.floor(g) + e;
-            c = E.getScrollbackLine(J);
+          if (M < g && E) {
+            const F = o - Math.floor(g) + M;
+            c = E.getScrollbackLine(F);
           } else {
-            const J = e - Math.floor(g);
-            c = A.getLine(J);
+            const F = M - Math.floor(g);
+            c = A.getLine(F);
           }
         else
-          c = A.getLine(e);
+          c = A.getLine(M);
         if (c) {
-          for (const J of c)
-            if (J.hyperlink_id === this.hoveredHyperlinkId || J.hyperlink_id === this.previousHoveredHyperlinkId) {
-              h.add(e);
+          for (const F of c)
+            if (F.hyperlink_id === this.hoveredHyperlinkId || F.hyperlink_id === this.previousHoveredHyperlinkId) {
+              N.add(M);
               break;
             }
         }
       }
       this.previousHoveredHyperlinkId = this.hoveredHyperlinkId;
     }
-    if (N) {
+    if (e) {
       if (this.previousHoveredLinkRange)
-        for (let e = this.previousHoveredLinkRange.startY; e <= this.previousHoveredLinkRange.endY; e++)
-          h.add(e);
+        for (let M = this.previousHoveredLinkRange.startY; M <= this.previousHoveredLinkRange.endY; M++)
+          N.add(M);
       if (this.hoveredLinkRange)
-        for (let e = this.hoveredLinkRange.startY; e <= this.hoveredLinkRange.endY; e++)
-          h.add(e);
+        for (let M = this.hoveredLinkRange.startY; M <= this.hoveredLinkRange.endY; M++)
+          N.add(M);
       this.previousHoveredLinkRange = this.hoveredLinkRange;
     }
     const k = /* @__PURE__ */ new Set();
-    for (let e = 0; e < D.rows; e++)
-      (g > 0 ? !0 : Q || A.isRowDirty(e) || t.has(e) || h.has(e)) && (k.add(e), e > 0 && k.add(e - 1), e < D.rows - 1 && k.add(e + 1));
-    for (let e = 0; e < D.rows; e++) {
-      if (!k.has(e))
+    for (let M = 0; M < D.rows; M++)
+      (g > 0 ? !0 : Q || A.isRowDirty(M) || t.has(M) || N.has(M)) && (k.add(M), M > 0 && k.add(M - 1), M < D.rows - 1 && k.add(M + 1));
+    for (let M = 0; M < D.rows; M++) {
+      if (!k.has(M))
         continue;
       let c = null;
       if (g > 0)
-        if (e < g && E) {
-          const J = o - Math.floor(g) + e;
-          c = E.getScrollbackLine(J);
+        if (M < g && E) {
+          const F = o - Math.floor(g) + M;
+          c = E.getScrollbackLine(F);
         } else {
-          const J = g > 0 ? e - Math.floor(g) : e;
-          c = A.getLine(J);
+          const F = g > 0 ? M - Math.floor(g) : M;
+          c = A.getLine(F);
         }
       else
-        c = A.getLine(e);
-      c && this.renderLine(c, e, D.cols);
+        c = A.getLine(M);
+      c && this.renderLine(c, M, D.cols);
     }
     g === 0 && I.visible && this.cursorVisible && this.renderCursor(I.x, I.y), E && C > 0 && this.renderScrollbar(g, o, D.rows, C), this.lastCursorPosition = { x: I.x, y: I.y }, A.clearDirty();
   }
@@ -1852,41 +1864,41 @@ class EA {
       return;
     }
     let o = A.bg_r, w = A.bg_g, s = A.bg_b;
-    A.flags & F.INVERSE && (o = A.fg_r, w = A.fg_g, s = A.fg_b), o === 0 && w === 0 && s === 0 || (this.ctx.fillStyle = this.rgbToCSS(o, w, s), this.ctx.fillRect(E, C, I, this.metrics.height));
+    A.flags & G.INVERSE && (o = A.fg_r, w = A.fg_g, s = A.fg_b), o === 0 && w === 0 && s === 0 || (this.ctx.fillStyle = this.rgbToCSS(o, w, s), this.ctx.fillRect(E, C, I, this.metrics.height));
   }
   /**
    * Render a cell's text and decorations (Pass 2 of two-pass rendering)
    * Selection foreground color is applied here to match the selection background.
    */
   renderCellText(A, Q, g, E) {
-    var M;
+    var a;
     const C = Q * this.metrics.width, I = g * this.metrics.height, D = this.metrics.width * A.width;
-    if (A.flags & F.INVISIBLE)
+    if (A.flags & G.INVISIBLE)
       return;
     const o = this.isInSelection(Q, g);
     let w = "";
-    if (A.flags & F.ITALIC && (w += "italic "), A.flags & F.BOLD && (w += "bold "), this.ctx.font = `${w}${this.fontSize}px ${this.fontFamily}`, E)
+    if (A.flags & G.ITALIC && (w += "italic "), A.flags & G.BOLD && (w += "bold "), this.ctx.font = `${w}${this.fontSize}px ${this.fontFamily}`, E)
       this.ctx.fillStyle = E;
     else if (o)
       this.ctx.fillStyle = this.theme.selectionForeground;
     else {
-      let t = A.fg_r, h = A.fg_g, a = A.fg_b;
-      A.flags & F.INVERSE && (t = A.bg_r, h = A.bg_g, a = A.bg_b), this.ctx.fillStyle = this.rgbToCSS(t, h, a);
+      let t = A.fg_r, N = A.fg_g, h = A.fg_b;
+      A.flags & G.INVERSE && (t = A.bg_r, N = A.bg_g, h = A.bg_b), this.ctx.fillStyle = this.rgbToCSS(t, N, h);
     }
-    A.flags & F.FAINT && (this.ctx.globalAlpha = 0.5);
+    A.flags & G.FAINT && (this.ctx.globalAlpha = 0.5);
     let s;
-    if (A.grapheme_len > 0 && ((M = this.currentBuffer) != null && M.getGraphemeString) ? s = this.currentBuffer.getGraphemeString(g, Q) : s = String.fromCodePoint(A.codepoint || 32), s === " ")
-      A.flags & F.FAINT && (this.ctx.globalAlpha = 1);
+    if (A.grapheme_len > 0 && ((a = this.currentBuffer) != null && a.getGraphemeString) ? s = this.currentBuffer.getGraphemeString(g, Q) : s = String.fromCodePoint(A.codepoint || 32), s === " ")
+      A.flags & G.FAINT && (this.ctx.globalAlpha = 1);
     else {
-      const t = this.ctx.fillStyle, h = this.ctx.font;
-      if (A.grapheme_len === 0 && !(A.flags & F.FAINT) && A.width === 1) {
-        const N = z.key(s, t, h);
-        let k = this.glyphCache.get(N);
+      const t = this.ctx.fillStyle, N = this.ctx.font;
+      if (A.grapheme_len === 0 && !(A.flags & G.FAINT) && A.width === 1) {
+        const e = z.key(s, t, N);
+        let k = this.glyphCache.get(e);
         k || (k = this.glyphCache.put(
-          N,
+          e,
           s,
           t,
-          h,
+          N,
           this.metrics.width,
           this.metrics.height,
           this.metrics.baseline
@@ -1894,23 +1906,23 @@ class EA {
       } else
         this.ctx.fillText(s, C, I + this.metrics.baseline);
     }
-    if (A.flags & F.FAINT && (this.ctx.globalAlpha = 1), A.flags & F.UNDERLINE) {
+    if (A.flags & G.FAINT && (this.ctx.globalAlpha = 1), A.flags & G.UNDERLINE) {
       const t = I + this.metrics.baseline + 2;
       this.ctx.strokeStyle = this.ctx.fillStyle, this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, t), this.ctx.lineTo(C + D, t), this.ctx.stroke();
     }
-    if (A.flags & F.STRIKETHROUGH) {
+    if (A.flags & G.STRIKETHROUGH) {
       const t = I + this.metrics.height / 2;
       this.ctx.strokeStyle = this.ctx.fillStyle, this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, t), this.ctx.lineTo(C + D, t), this.ctx.stroke();
     }
     if (A.hyperlink_id > 0 && A.hyperlink_id === this.hoveredHyperlinkId) {
-      const h = I + this.metrics.baseline + 2;
-      this.ctx.strokeStyle = "#4A90E2", this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, h), this.ctx.lineTo(C + D, h), this.ctx.stroke();
+      const N = I + this.metrics.baseline + 2;
+      this.ctx.strokeStyle = "#4A90E2", this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, N), this.ctx.lineTo(C + D, N), this.ctx.stroke();
     }
     if (this.hoveredLinkRange) {
       const t = this.hoveredLinkRange;
       if (g === t.startY && Q >= t.startX && (g < t.endY || Q <= t.endX) || g > t.startY && g < t.endY || g === t.endY && Q <= t.endX && (g > t.startY || Q >= t.startX)) {
-        const a = I + this.metrics.baseline + 2;
-        this.ctx.strokeStyle = "#4A90E2", this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, a), this.ctx.lineTo(C + D, a), this.ctx.stroke();
+        const h = I + this.metrics.baseline + 2;
+        this.ctx.strokeStyle = "#4A90E2", this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, h), this.ctx.lineTo(C + D, h), this.ctx.stroke();
       }
     }
   }
@@ -2013,15 +2025,13 @@ class EA {
    * @param opacity Opacity level (0-1) for fade in/out effect
    */
   renderScrollbar(A, Q, g, E = 1) {
-    const C = this.ctx, I = this.canvas.height / this.devicePixelRatio, D = this.canvas.width / this.devicePixelRatio, o = 8, w = D - o - 4, s = 4, M = I - s * 2;
-    if (E <= 0 || Q === 0)
+    const C = this.scrollbarCanvas ?? this.canvas, I = this.scrollbarCtx ?? this.ctx, D = C.height / this.devicePixelRatio, o = C.width / this.devicePixelRatio;
+    if (this.scrollbarCtx && (I.save(), I.setTransform(1, 0, 0, 1, 0, 0), I.clearRect(0, 0, C.width, C.height), I.restore()), E <= 0 || Q === 0)
       return;
-    const t = Q + g, h = Math.max(20, g / t * M), a = A / Q, N = s + (M - h) * (1 - a);
-    C.save(), C.globalCompositeOperation = "source-over";
-    const k = A > 0 ? 0.45 : 0.25;
-    C.fillStyle = `rgba(128, 128, 128, ${k * E})`;
-    const G = o / 2;
-    C.beginPath(), C.moveTo(w + G, N), C.lineTo(w + o - G, N), C.arcTo(w + o, N, w + o, N + G, G), C.lineTo(w + o, N + h - G), C.arcTo(w + o, N + h, w + o - G, N + h, G), C.lineTo(w + G, N + h), C.arcTo(w, N + h, w, N + h - G, G), C.lineTo(w, N + G), C.arcTo(w, N, w + G, N, G), C.closePath(), C.fill(), C.restore();
+    const w = 8, s = o - w - 4, a = 4, t = D - a * 2, N = Q + g, h = Math.max(20, g / N * t), e = A / Q, k = a + (t - h) * (1 - e), U = A > 0 ? 0.45 : 0.25;
+    I.fillStyle = `rgba(128, 128, 128, ${U * E})`;
+    const M = w / 2;
+    I.beginPath(), I.moveTo(s + M, k), I.lineTo(s + w - M, k), I.arcTo(s + w, k, s + w, k + M, M), I.lineTo(s + w, k + h - M), I.arcTo(s + w, k + h, s + w - M, k + h, M), I.lineTo(s + M, k + h), I.arcTo(s, k + h, s, k + h - M, M), I.lineTo(s, k + M), I.arcTo(s, k, s + M, k, M), I.closePath(), I.fill();
   }
   getMetrics() {
     return { ...this.metrics };
@@ -2087,10 +2097,10 @@ class EA {
     this.stopCursorBlink(), this.glyphCache.clear();
   }
 }
-const l = class L {
+const R = class l {
   // ms between scroll steps
   constructor(A, Q, g, E) {
-    this.selectionStart = null, this.selectionEnd = null, this.isSelecting = !1, this.mouseDownX = 0, this.mouseDownY = 0, this.dragThresholdMet = !1, this.mouseDownTarget = null, this.dirtySelectionRows = /* @__PURE__ */ new Set(), this.selectionChangedEmitter = new U(), this.boundMouseUpHandler = null, this.boundContextMenuHandler = null, this.boundClickHandler = null, this.boundDocumentMouseMoveHandler = null, this.autoScrollInterval = null, this.autoScrollDirection = 0, this.terminal = A, this.renderer = Q, this.wasmTerm = g, this.textarea = E, this.attachEventListeners();
+    this.selectionStart = null, this.selectionEnd = null, this.isSelecting = !1, this.mouseDownX = 0, this.mouseDownY = 0, this.dragThresholdMet = !1, this.mouseDownTarget = null, this.dirtySelectionRows = /* @__PURE__ */ new Set(), this.selectionChangedEmitter = new J(), this.boundMouseUpHandler = null, this.boundContextMenuHandler = null, this.boundClickHandler = null, this.boundDocumentMouseMoveHandler = null, this.autoScrollInterval = null, this.autoScrollDirection = 0, this.terminal = A, this.renderer = Q, this.wasmTerm = g, this.textarea = E, this.attachEventListeners();
   }
   // pixels from edge to trigger scroll
   /**
@@ -2133,28 +2143,28 @@ const l = class L {
       if (D < C)
         o = this.wasmTerm.getScrollbackLine(D);
       else {
-        const h = D - C;
-        o = this.wasmTerm.getLine(h);
+        const N = D - C;
+        o = this.wasmTerm.getLine(N);
       }
       if (!o)
         continue;
       let w = -1;
-      const s = D === Q ? A : 0, M = D === E ? g : o.length - 1;
+      const s = D === Q ? A : 0, a = D === E ? g : o.length - 1;
       let t = "";
-      for (let h = s; h <= M; h++) {
-        const a = o[h];
-        if (a && a.codepoint !== 0) {
-          let N;
-          if (a.grapheme_len > 0)
+      for (let N = s; N <= a; N++) {
+        const h = o[N];
+        if (h && h.codepoint !== 0) {
+          let e;
+          if (h.grapheme_len > 0)
             if (D < C)
-              N = this.wasmTerm.getScrollbackGraphemeString(D, h);
+              e = this.wasmTerm.getScrollbackGraphemeString(D, N);
             else {
               const k = D - C;
-              N = this.wasmTerm.getGraphemeString(k, h);
+              e = this.wasmTerm.getGraphemeString(k, N);
             }
           else
-            N = String.fromCodePoint(a.codepoint);
-          t += N, N.trim() && (w = t.length);
+            e = String.fromCodePoint(h.codepoint);
+          t += e, e.trim() && (w = t.length);
         } else
           t += " ";
       }
@@ -2403,7 +2413,7 @@ const l = class L {
    * Update auto-scroll based on mouse Y position within canvas
    */
   updateAutoScroll(A, Q) {
-    const g = L.AUTO_SCROLL_EDGE_SIZE;
+    const g = l.AUTO_SCROLL_EDGE_SIZE;
     A < g ? this.startAutoScroll(-1) : A > Q - g ? this.startAutoScroll(1) : this.stopAutoScroll();
   }
   /**
@@ -2415,7 +2425,7 @@ const l = class L {
         this.stopAutoScroll();
         return;
       }
-      const Q = L.AUTO_SCROLL_SPEED * this.autoScrollDirection;
+      const Q = l.AUTO_SCROLL_SPEED * this.autoScrollDirection;
       if (this.terminal.scrollLines(Q), this.selectionEnd) {
         const g = this.wasmTerm.getDimensions();
         if (this.autoScrollDirection < 0) {
@@ -2427,7 +2437,7 @@ const l = class L {
         }
       }
       this.requestRender();
-    }, L.AUTO_SCROLL_INTERVAL));
+    }, l.AUTO_SCROLL_INTERVAL));
   }
   /**
    * Stop auto-scrolling
@@ -2545,10 +2555,10 @@ const l = class L {
   requestRender() {
   }
 };
-l.AUTO_SCROLL_EDGE_SIZE = 30;
-l.AUTO_SCROLL_SPEED = 3;
-l.AUTO_SCROLL_INTERVAL = 50;
-let CA = l;
+R.AUTO_SCROLL_EDGE_SIZE = 30;
+R.AUTO_SCROLL_SPEED = 3;
+R.AUTO_SCROLL_INTERVAL = 50;
+let CA = R;
 class sA {
   // 200ms fade animation
   constructor(A = {}) {
@@ -2556,7 +2566,7 @@ class sA {
       get activeVersion() {
         return "15.1";
       }
-    }, this.dataEmitter = new U(), this.resizeEmitter = new U(), this.bellEmitter = new U(), this.selectionChangeEmitter = new U(), this.keyEmitter = new U(), this.titleChangeEmitter = new U(), this.scrollEmitter = new U(), this.renderEmitter = new U(), this.cursorMoveEmitter = new U(), this.onData = this.dataEmitter.event, this.onResize = this.resizeEmitter.event, this.onBell = this.bellEmitter.event, this.onSelectionChange = this.selectionChangeEmitter.event, this.onKey = this.keyEmitter.event, this.onTitleChange = this.titleChangeEmitter.event, this.onScroll = this.scrollEmitter.event, this.onRender = this.renderEmitter.event, this.onCursorMove = this.cursorMoveEmitter.event, this.isOpen = !1, this.isDisposed = !1, this.writeQueue = [], this.addons = [], this.currentTitle = "", this.viewportY = 0, this.targetViewportY = 0, this.lastCursorY = 0, this.isDraggingScrollbar = !1, this.scrollbarDragStart = null, this.scrollbarDragStartViewportY = 0, this.scrollbarVisible = !1, this.scrollbarOpacity = 0, this.SCROLLBAR_HIDE_DELAY_MS = 1500, this.SCROLLBAR_FADE_DURATION_MS = 200, this.animateScroll = () => {
+    }, this.dataEmitter = new J(), this.resizeEmitter = new J(), this.bellEmitter = new J(), this.selectionChangeEmitter = new J(), this.keyEmitter = new J(), this.titleChangeEmitter = new J(), this.scrollEmitter = new J(), this.renderEmitter = new J(), this.cursorMoveEmitter = new J(), this.onData = this.dataEmitter.event, this.onResize = this.resizeEmitter.event, this.onBell = this.bellEmitter.event, this.onSelectionChange = this.selectionChangeEmitter.event, this.onKey = this.keyEmitter.event, this.onTitleChange = this.titleChangeEmitter.event, this.onScroll = this.scrollEmitter.event, this.onRender = this.renderEmitter.event, this.onCursorMove = this.cursorMoveEmitter.event, this.isOpen = !1, this.isDisposed = !1, this.writeQueue = [], this.addons = [], this.currentTitle = "", this.viewportY = 0, this.targetViewportY = 0, this.lastCursorY = 0, this.isDraggingScrollbar = !1, this.scrollbarDragStart = null, this.scrollbarDragStartViewportY = 0, this.scrollbarVisible = !1, this.scrollbarOpacity = 0, this.SCROLLBAR_HIDE_DELAY_MS = 1500, this.SCROLLBAR_FADE_DURATION_MS = 200, this.animateScroll = () => {
       if (!this.wasmTerm || this.scrollAnimationStartTime === void 0)
         return;
       const g = this.options.smoothScrollDuration ?? 100, E = this.targetViewportY - this.viewportY;
@@ -2595,13 +2605,13 @@ class sA {
         return;
       const E = this.canvas.getBoundingClientRect(), C = Math.floor((g.clientX - E.left) / this.renderer.charWidth), D = Math.floor((g.clientY - E.top) / this.renderer.charHeight), o = this.wasmTerm.getScrollbackLength();
       let w;
-      const s = this.getViewportY(), M = Math.max(0, Math.floor(s));
-      if (M > 0)
-        if (D < M)
-          w = o - M + D;
+      const s = this.getViewportY(), a = Math.max(0, Math.floor(s));
+      if (a > 0)
+        if (D < a)
+          w = o - a + D;
         else {
-          const h = D - M;
-          w = o + h;
+          const N = D - a;
+          w = o + N;
         }
       else
         w = o + D;
@@ -2633,14 +2643,14 @@ class sA {
       const E = this.wasmTerm.getScrollbackLength();
       if (E === 0)
         return;
-      const C = this.canvas.getBoundingClientRect(), I = g.clientX - C.left, D = g.clientY - C.top, o = C.width, w = C.height, s = 8, M = o - s - 4, t = 4;
-      if (I >= M && I <= M + s) {
+      const C = this.canvas.getBoundingClientRect(), I = g.clientX - C.left, D = g.clientY - C.top, o = C.width, w = C.height, s = 8, a = o - s - 4, t = 4;
+      if (I >= a && I <= a + s) {
         g.preventDefault(), g.stopPropagation(), g.stopImmediatePropagation();
-        const h = w - t * 2, a = this.rows, N = E + a, k = Math.max(20, a / N * h), G = this.viewportY / E, e = t + (h - k) * (1 - G);
-        if (D >= e && D <= e + k)
+        const N = w - t * 2, h = this.rows, e = E + h, k = Math.max(20, h / e * N), U = this.viewportY / E, M = t + (N - k) * (1 - U);
+        if (D >= M && D <= M + k)
           this.isDraggingScrollbar = !0, this.scrollbarDragStart = D, this.scrollbarDragStartViewportY = this.viewportY, this.canvas && (this.canvas.style.userSelect = "none", this.canvas.style.webkitUserSelect = "none");
         else {
-          const J = 1 - (D - t) / h, Y = Math.round(J * E);
+          const F = 1 - (D - t) / N, Y = Math.round(F * E);
           this.scrollToLine(Math.max(0, Math.min(E, Y)));
         }
       }
@@ -2796,7 +2806,7 @@ class sA {
         cursorStyle: this.options.cursorStyle,
         cursorBlink: this.options.cursorBlink,
         theme: this.options.theme
-      }), this.renderer.resize(this.cols, this.rows);
+      }), this.renderer.resize(this.cols, this.rows), this.scrollbarOverlay = document.createElement("canvas"), this.scrollbarOverlay.style.display = "block", this.scrollbarOverlay.style.position = "absolute", this.scrollbarOverlay.style.top = "0", this.scrollbarOverlay.style.left = "0", this.scrollbarOverlay.style.pointerEvents = "none", A.appendChild(this.scrollbarOverlay), this.renderer.setScrollbarCanvas(this.scrollbarOverlay);
       const E = this.canvas, C = this.renderer, I = this.wasmTerm, D = {
         hasMouseTracking: () => (I == null ? void 0 : I.hasMouseTracking()) ?? !1,
         hasSgrMouseMode: () => (I == null ? void 0 : I.getMode(1006, !1)) ?? !0,
@@ -3165,7 +3175,7 @@ class sA {
    * Clean up components (called on dispose or error)
    */
   cleanupComponents() {
-    this.selectionManager && (this.selectionManager.dispose(), this.selectionManager = void 0), this.inputHandler && (this.inputHandler.dispose(), this.inputHandler = void 0), this.renderer && (this.renderer.dispose(), this.renderer = void 0), this.canvas && this.canvas.parentNode && (this.canvas.parentNode.removeChild(this.canvas), this.canvas = void 0), this.textarea && this.textarea.parentNode && (this.textarea.parentNode.removeChild(this.textarea), this.textarea = void 0), this.element && (this.element.removeEventListener("wheel", this.handleWheel), this.element.removeEventListener("mousedown", this.handleMouseDown, { capture: !0 }), this.element.removeEventListener("mousemove", this.handleMouseMove), this.element.removeEventListener("mouseleave", this.handleMouseLeave), this.element.removeEventListener("click", this.handleClick), this.element.removeAttribute("contenteditable"), this.element.removeAttribute("role"), this.element.removeAttribute("aria-label"), this.element.removeAttribute("aria-multiline")), this.isOpen && typeof document < "u" && document.removeEventListener("mouseup", this.handleMouseUp), this.scrollbarHideTimeout && (window.clearTimeout(this.scrollbarHideTimeout), this.scrollbarHideTimeout = void 0), this.linkDetector && (this.linkDetector.dispose(), this.linkDetector = void 0), this.wasmTerm && (this.wasmTerm.free(), this.wasmTerm = void 0), this.ghostty = void 0, this.element = void 0, this.textarea = void 0;
+    this.selectionManager && (this.selectionManager.dispose(), this.selectionManager = void 0), this.inputHandler && (this.inputHandler.dispose(), this.inputHandler = void 0), this.renderer && (this.renderer.dispose(), this.renderer = void 0), this.scrollbarOverlay && this.scrollbarOverlay.parentNode && (this.scrollbarOverlay.parentNode.removeChild(this.scrollbarOverlay), this.scrollbarOverlay = void 0), this.canvas && this.canvas.parentNode && (this.canvas.parentNode.removeChild(this.canvas), this.canvas = void 0), this.textarea && this.textarea.parentNode && (this.textarea.parentNode.removeChild(this.textarea), this.textarea = void 0), this.element && (this.element.removeEventListener("wheel", this.handleWheel), this.element.removeEventListener("mousedown", this.handleMouseDown, { capture: !0 }), this.element.removeEventListener("mousemove", this.handleMouseMove), this.element.removeEventListener("mouseleave", this.handleMouseLeave), this.element.removeEventListener("click", this.handleClick), this.element.removeAttribute("contenteditable"), this.element.removeAttribute("role"), this.element.removeAttribute("aria-label"), this.element.removeAttribute("aria-multiline")), this.isOpen && typeof document < "u" && document.removeEventListener("mouseup", this.handleMouseUp), this.scrollbarHideTimeout && (window.clearTimeout(this.scrollbarHideTimeout), this.scrollbarHideTimeout = void 0), this.linkDetector && (this.linkDetector.dispose(), this.linkDetector = void 0), this.wasmTerm && (this.wasmTerm.free(), this.wasmTerm = void 0), this.ghostty = void 0, this.element = void 0, this.textarea = void 0;
   }
   /**
    * Assert terminal is open (throw if not)
@@ -3186,9 +3196,9 @@ class sA {
     let I = 0, D = null;
     const o = this.getViewportY(), w = Math.max(0, Math.floor(o));
     if (w > 0) {
-      const N = this.wasmTerm.getScrollbackLength();
+      const e = this.wasmTerm.getScrollbackLength();
       if (C < w) {
-        const k = N - w + C;
+        const k = e - w + C;
         D = this.wasmTerm.getScrollbackLine(k);
       } else {
         const k = C - w;
@@ -3199,37 +3209,37 @@ class sA {
     D && g >= 0 && g < D.length && (I = D[g].hyperlink_id);
     const s = this.renderer.hoveredHyperlinkId || 0;
     I !== s && this.renderer.setHoveredHyperlinkId(I);
-    const M = this.wasmTerm.getScrollbackLength();
+    const a = this.wasmTerm.getScrollbackLength();
     let t;
-    const h = this.getViewportY(), a = Math.max(0, Math.floor(h));
-    if (a > 0)
-      if (C < a)
-        t = M - a + C;
+    const N = this.getViewportY(), h = Math.max(0, Math.floor(N));
+    if (h > 0)
+      if (C < h)
+        t = a - h + C;
       else {
-        const N = C - a;
-        t = M + N;
+        const e = C - h;
+        t = a + e;
       }
     else
-      t = M + C;
-    this.linkDetector.getLinkAt(g, t).then((N) => {
-      var k, G, e, c;
-      if (N !== this.currentHoveredLink) {
-        (G = (k = this.currentHoveredLink) == null ? void 0 : k.hover) == null || G.call(k, !1), this.currentHoveredLink = N, (e = N == null ? void 0 : N.hover) == null || e.call(N, !0);
-        const J = N ? "pointer" : "text";
-        if (this.element && (this.element.style.cursor = J), this.canvas && (this.canvas.style.cursor = J), this.renderer)
-          if (N) {
-            const Y = ((c = this.wasmTerm) == null ? void 0 : c.getScrollbackLength()) || 0, j = this.getViewportY(), x = Math.max(0, Math.floor(j)), T = N.range.start.y - Y + x, d = N.range.end.y - Y + x;
+      t = a + C;
+    this.linkDetector.getLinkAt(g, t).then((e) => {
+      var k, U, M, c;
+      if (e !== this.currentHoveredLink) {
+        (U = (k = this.currentHoveredLink) == null ? void 0 : k.hover) == null || U.call(k, !1), this.currentHoveredLink = e, (M = e == null ? void 0 : e.hover) == null || M.call(e, !0);
+        const F = e ? "pointer" : "text";
+        if (this.element && (this.element.style.cursor = F), this.canvas && (this.canvas.style.cursor = F), this.renderer)
+          if (e) {
+            const Y = ((c = this.wasmTerm) == null ? void 0 : c.getScrollbackLength()) || 0, j = this.getViewportY(), x = Math.max(0, Math.floor(j)), T = e.range.start.y - Y + x, d = e.range.end.y - Y + x;
             T < this.rows && d >= 0 ? this.renderer.setHoveredLinkRange({
-              startX: N.range.start.x,
+              startX: e.range.start.x,
               startY: Math.max(0, T),
-              endX: N.range.end.x,
+              endX: e.range.end.x,
               endY: Math.min(this.rows - 1, d)
             }) : this.renderer.setHoveredLinkRange(null);
           } else
             this.renderer.setHoveredLinkRange(null);
       }
-    }).catch((N) => {
-      console.warn("Link detection error:", N);
+    }).catch((e) => {
+      console.warn("Link detection error:", e);
     });
   }
   /**
@@ -3241,8 +3251,8 @@ class sA {
     const Q = this.wasmTerm.getScrollbackLength();
     if (Q === 0)
       return;
-    const g = this.canvas.getBoundingClientRect(), C = A.clientY - g.top - this.scrollbarDragStart, o = g.height - 4 * 2, w = this.rows, s = Q + w, M = Math.max(20, w / s * o), t = -C / (o - M), h = Math.round(t * Q), a = this.scrollbarDragStartViewportY + h;
-    this.scrollToLine(Math.max(0, Math.min(Q, a)));
+    const g = this.canvas.getBoundingClientRect(), C = A.clientY - g.top - this.scrollbarDragStart, o = g.height - 4 * 2, w = this.rows, s = Q + w, a = Math.max(20, w / s * o), t = -C / (o - a), N = Math.round(t * Q), h = this.scrollbarDragStartViewportY + N;
+    this.scrollToLine(Math.max(0, Math.min(Q, h)));
   }
   /**
    * Show scrollbar with fade-in and schedule auto-hide
@@ -3411,11 +3421,11 @@ class tA {
     const E = this._terminal.element;
     if (typeof E.clientWidth > "u")
       return;
-    const C = window.getComputedStyle(E), I = Number.parseInt(C.getPropertyValue("padding-top")) || 0, D = Number.parseInt(C.getPropertyValue("padding-bottom")) || 0, o = Number.parseInt(C.getPropertyValue("padding-left")) || 0, w = Number.parseInt(C.getPropertyValue("padding-right")) || 0, s = E.clientWidth, M = E.clientHeight;
-    if (s === 0 || M === 0)
+    const C = window.getComputedStyle(E), I = Number.parseInt(C.getPropertyValue("padding-top")) || 0, D = Number.parseInt(C.getPropertyValue("padding-bottom")) || 0, o = Number.parseInt(C.getPropertyValue("padding-left")) || 0, w = Number.parseInt(C.getPropertyValue("padding-right")) || 0, s = E.clientWidth, a = E.clientHeight;
+    if (s === 0 || a === 0)
       return;
-    const t = s - o - w - oA, h = M - I - D, a = Math.max(IA, Math.floor(t / g.width)), N = Math.max(DA, Math.floor(h / g.height));
-    return { cols: a, rows: N };
+    const t = s - o - w - oA, N = a - I - D, h = Math.max(IA, Math.floor(t / g.width)), e = Math.max(DA, Math.floor(N / g.height));
+    return { cols: h, rows: e };
   }
   /**
    * Observe the terminal's container for resize events
@@ -3435,12 +3445,12 @@ class tA {
     }), this._resizeObserver.observe(this._terminal.element)));
   }
 }
-let R = null;
+let L = null;
 async function MA() {
-  R || (R = await q.load());
+  L || (L = await q.load());
 }
 function wA() {
-  if (!R)
+  if (!L)
     throw new Error(
       `ghostty-web not initialized. Call init() before creating Terminal instances.
 Example:
@@ -3453,13 +3463,13 @@ For tests, pass a Ghostty instance directly:
   const ghostty = await Ghostty.load();
   const term = new Terminal({ ghostty });`
     );
-  return R;
+  return L;
 }
 export {
   EA as CanvasRenderer,
-  F as CellFlags,
+  G as CellFlags,
   S as DirtyState,
-  U as EventEmitter,
+  J as EventEmitter,
   tA as FitAddon,
   q as Ghostty,
   v as GhosttyTerminal,

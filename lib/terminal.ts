@@ -69,6 +69,7 @@ export class Terminal implements ITerminalCore {
   private inputHandler?: InputHandler;
   private selectionManager?: SelectionManager;
   private canvas?: HTMLCanvasElement;
+  private scrollbarOverlay?: HTMLCanvasElement;
 
   // Link detection system
   private linkDetector?: LinkDetector;
@@ -427,6 +428,17 @@ export class Terminal implements ITerminalCore {
 
       // Size canvas to terminal dimensions (use renderer.resize for proper DPI scaling)
       this.renderer.resize(this.cols, this.rows);
+
+      // Create a transparent overlay canvas for the scrollbar so it can be
+      // fully cleared each frame without disturbing cell content underneath.
+      this.scrollbarOverlay = document.createElement('canvas');
+      this.scrollbarOverlay.style.display = 'block';
+      this.scrollbarOverlay.style.position = 'absolute';
+      this.scrollbarOverlay.style.top = '0';
+      this.scrollbarOverlay.style.left = '0';
+      this.scrollbarOverlay.style.pointerEvents = 'none';
+      parent.appendChild(this.scrollbarOverlay);
+      this.renderer.setScrollbarCanvas(this.scrollbarOverlay);
 
       // Create mouse tracking configuration
       const canvas = this.canvas;
@@ -1234,7 +1246,11 @@ export class Terminal implements ITerminalCore {
       this.renderer = undefined;
     }
 
-    // Remove canvas from DOM
+    // Remove canvases from DOM
+    if (this.scrollbarOverlay && this.scrollbarOverlay.parentNode) {
+      this.scrollbarOverlay.parentNode.removeChild(this.scrollbarOverlay);
+      this.scrollbarOverlay = undefined;
+    }
     if (this.canvas && this.canvas.parentNode) {
       this.canvas.parentNode.removeChild(this.canvas);
       this.canvas = undefined;

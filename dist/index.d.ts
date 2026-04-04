@@ -1,6 +1,9 @@
 export declare class CanvasRenderer {
     private canvas;
     private ctx;
+    /** Separate overlay canvas for the scrollbar — avoids compositing artifacts on the main canvas. */
+    private scrollbarCanvas;
+    private scrollbarCtx;
     private fontSize;
     private fontFamily;
     private cursorStyle;
@@ -32,6 +35,11 @@ export declare class CanvasRenderer {
      * Resize canvas to fit terminal dimensions
      */
     resize(cols: number, rows: number): void;
+    /**
+     * Attach a scrollbar overlay canvas.  The caller creates and positions
+     * the element; we just keep it sized in sync and draw into it.
+     */
+    setScrollbarCanvas(canvas: HTMLCanvasElement): void;
     /**
      * Render the terminal buffer to canvas
      */
@@ -1638,6 +1646,7 @@ export declare class Terminal implements ITerminalCore {
     private inputHandler?;
     private selectionManager?;
     private canvas?;
+    private scrollbarOverlay?;
     private linkDetector?;
     private currentHoveredLink?;
     private mouseMoveThrottleTimeout?;

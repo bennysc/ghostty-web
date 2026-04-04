@@ -167,6 +167,9 @@ class GlyphCache {
 export class CanvasRenderer {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
+  /** Separate overlay canvas for the scrollbar — avoids compositing artifacts on the main canvas. */
+  private scrollbarCanvas: HTMLCanvasElement | null = null;
+  private scrollbarCtx: CanvasRenderingContext2D | null = null;
   private fontSize: number;
   private fontFamily: string;
   private cursorStyle: 'block' | 'underline' | 'bar';
@@ -334,6 +337,35 @@ export class CanvasRenderer {
     // Fill background after resize
     this.ctx.fillStyle = this.theme.background;
     this.ctx.fillRect(0, 0, cssWidth, cssHeight);
+
+    // Keep overlay canvas in sync
+    if (this.scrollbarCanvas && this.scrollbarCtx) {
+      this.scrollbarCanvas.style.width = `${cssWidth}px`;
+      this.scrollbarCanvas.style.height = `${cssHeight}px`;
+      this.scrollbarCanvas.width = cssWidth * this.devicePixelRatio;
+      this.scrollbarCanvas.height = cssHeight * this.devicePixelRatio;
+      this.scrollbarCtx.scale(this.devicePixelRatio, this.devicePixelRatio);
+    }
+  }
+
+  /**
+   * Attach a scrollbar overlay canvas.  The caller creates and positions
+   * the element; we just keep it sized in sync and draw into it.
+   */
+  public setScrollbarCanvas(canvas: HTMLCanvasElement): void {
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+    this.scrollbarCanvas = canvas;
+    this.scrollbarCtx = ctx;
+
+    // Initialise to current size
+    const cssWidth = this.canvas.width / this.devicePixelRatio;
+    const cssHeight = this.canvas.height / this.devicePixelRatio;
+    canvas.style.width = `${cssWidth}px`;
+    canvas.style.height = `${cssHeight}px`;
+    canvas.width = cssWidth * this.devicePixelRatio;
+    canvas.height = cssHeight * this.devicePixelRatio;
+    ctx.scale(this.devicePixelRatio, this.devicePixelRatio);
   }
 
   // ==========================================================================
@@ -966,18 +998,29 @@ export class CanvasRenderer {
     visibleRows: number,
     opacity: number = 1
   ): void {
-    const ctx = this.ctx;
-    const canvasHeight = this.canvas.height / this.devicePixelRatio;
-    const canvasWidth = this.canvas.width / this.devicePixelRatio;
+    // Use the dedicated overlay canvas so the scrollbar never composites on
+    // top of stale pixels from the main cell canvas.
+    const sCanvas = this.scrollbarCanvas ?? this.canvas;
+    const ctx = this.scrollbarCtx ?? this.ctx;
+    const canvasHeight = sCanvas.height / this.devicePixelRatio;
+    const canvasWidth = sCanvas.width / this.devicePixelRatio;
+
+    // Always clear the overlay first (the overlay only contains the scrollbar).
+    if (this.scrollbarCtx) {
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, sCanvas.width, sCanvas.height);
+      ctx.restore();
+    }
+
+    // Don't draw scrollbar if fully transparent or no scrollback
+    if (opacity <= 0 || scrollbackLength === 0) return;
 
     // Scrollbar dimensions
     const scrollbarWidth = 8;
     const scrollbarX = canvasWidth - scrollbarWidth - 4;
     const scrollbarPadding = 4;
     const scrollbarTrackHeight = canvasHeight - scrollbarPadding * 2;
-
-    // Don't draw scrollbar if fully transparent or no scrollback
-    if (opacity <= 0 || scrollbackLength === 0) return;
 
     // Calculate scrollbar thumb size and position
     const totalLines = scrollbackLength + visibleRows;
@@ -987,13 +1030,9 @@ export class CanvasRenderer {
     const scrollPosition = viewportY / scrollbackLength; // 0 to 1
     const thumbY = scrollbarPadding + (scrollbarTrackHeight - thumbHeight) * (1 - scrollPosition);
 
-    // Draw scrollbar thumb as a translucent overlay (no track background so
-    // text underneath stays readable).
-    ctx.save();
-    ctx.globalCompositeOperation = 'source-over';
+    // Draw scrollbar thumb as a translucent rounded pill.
     const baseOpacity = viewportY > 0 ? 0.45 : 0.25;
     ctx.fillStyle = `rgba(128, 128, 128, ${baseOpacity * opacity})`;
-    // Use rounded rect for a modern scrollbar appearance
     const radius = scrollbarWidth / 2;
     ctx.beginPath();
     ctx.moveTo(scrollbarX + radius, thumbY);
@@ -1007,7 +1046,6 @@ export class CanvasRenderer {
     ctx.arcTo(scrollbarX, thumbY, scrollbarX + radius, thumbY, radius);
     ctx.closePath();
     ctx.fill();
-    ctx.restore();
   }
   public getMetrics(): FontMetrics {
     return { ...this.metrics };
