@@ -586,6 +586,10 @@ export class Terminal implements ITerminalCore {
     // preserve selection when new data arrives. Selection is cleared by user actions
     // like clicking or typing, not by incoming data.
 
+    // Snapshot scrollback length so we can compensate viewportY after the write.
+    const scrolledUp = this.viewportY > 0;
+    const prevScrollback = scrolledUp ? this.wasmTerm!.getScrollbackLength() : 0;
+
     // Write directly to WASM terminal (handles VT parsing internally)
     this.wasmTerm!.write(data);
 
@@ -604,9 +608,18 @@ export class Terminal implements ITerminalCore {
     // Invalidate link cache (content changed)
     this.linkDetector?.invalidateCache();
 
-    // Do NOT auto-scroll to bottom when the user has scrolled up.
-    // viewportY > 0 means the user deliberately scrolled into history;
-    // yanking them back on every write is disorienting.
+    // When the user is scrolled up, keep the viewport pinned to the same
+    // content.  viewportY counts lines from the bottom, so when new lines
+    // push content into scrollback we must increase viewportY by the same
+    // amount — otherwise the viewport slides towards the bottom.
+    if (scrolledUp) {
+      const newScrollback = this.wasmTerm!.getScrollbackLength();
+      const delta = newScrollback - prevScrollback;
+      if (delta > 0) {
+        const maxViewport = newScrollback;
+        this.viewportY = Math.min(this.viewportY + delta, maxViewport);
+      }
+    }
 
     // Check for title changes (OSC 0, 1, 2 sequences)
     // This is a simplified implementation - Ghostty WASM may provide this
