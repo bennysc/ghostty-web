@@ -388,9 +388,12 @@ export class Terminal implements ITerminalCore {
       this.textarea.setAttribute('spellcheck', 'false');
       this.textarea.setAttribute('tabindex', '0'); // Allow focus for mobile keyboard
       this.textarea.setAttribute('aria-label', 'Terminal input');
-      // Use clip-path to completely hide the textarea and its caret
+      // Completely hide the textarea AND its native caret.  Some browsers
+      // still render a blinking insertion caret through opacity:0 and
+      // clip-path, so we also move it off-screen and suppress the caret
+      // color.
       this.textarea.style.position = 'absolute';
-      this.textarea.style.left = '0';
+      this.textarea.style.left = '-9999px';
       this.textarea.style.top = '0';
       this.textarea.style.width = '1px';
       this.textarea.style.height = '1px';
@@ -398,7 +401,7 @@ export class Terminal implements ITerminalCore {
       this.textarea.style.border = 'none';
       this.textarea.style.margin = '0';
       this.textarea.style.opacity = '0';
-      this.textarea.style.clipPath = 'inset(50%)'; // Clip everything including caret
+      this.textarea.style.caretColor = 'transparent';
       this.textarea.style.overflow = 'hidden';
       this.textarea.style.whiteSpace = 'nowrap';
       this.textarea.style.resize = 'none';
