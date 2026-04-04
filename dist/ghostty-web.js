@@ -89,8 +89,8 @@ class P {
       throw new Error(`Failed to create key event: ${g}`);
     const E = new DataView(this.exports.memory.buffer), C = E.getUint32(Q, !0);
     if (this.exports.ghostty_wasm_free_opaque(Q), this.exports.ghostty_key_event_set_action(C, A.action), this.exports.ghostty_key_event_set_key(C, A.key), this.exports.ghostty_key_event_set_mods(C, A.mods), A.utf8) {
-      const e = new TextEncoder().encode(A.utf8), h = this.exports.ghostty_wasm_alloc_u8_array(e.length);
-      new Uint8Array(this.exports.memory.buffer).set(e, h), this.exports.ghostty_key_event_set_utf8(C, h, e.length), this.exports.ghostty_wasm_free_u8_array(h, e.length);
+      const N = new TextEncoder().encode(A.utf8), h = this.exports.ghostty_wasm_alloc_u8_array(N.length);
+      new Uint8Array(this.exports.memory.buffer).set(N, h), this.exports.ghostty_key_event_set_utf8(C, h, N.length), this.exports.ghostty_wasm_free_u8_array(h, N.length);
     }
     const I = 32, D = this.exports.ghostty_wasm_alloc_u8_array(I), o = this.exports.ghostty_wasm_alloc_usize(), w = this.exports.ghostty_key_encoder_encode(
       this.encoder,
@@ -1451,20 +1451,20 @@ class BA {
       if (s < 0 ? a = this.terminal.wasmTerm.getScrollbackHyperlinkUri(A, I) : a = this.terminal.wasmTerm.getHyperlinkUri(s, I), a) {
         let t = I;
         for (let h = I + 1; h < C.length; h++) {
-          const N = C.getCell(h);
-          if (!N || N.getHyperlinkId() === 0 || (s < 0 ? this.terminal.wasmTerm.getScrollbackHyperlinkUri(A, h) : this.terminal.wasmTerm.getHyperlinkUri(s, h)) !== a)
+          const e = C.getCell(h);
+          if (!e || e.getHyperlinkId() === 0 || (s < 0 ? this.terminal.wasmTerm.getScrollbackHyperlinkUri(A, h) : this.terminal.wasmTerm.getHyperlinkUri(s, h)) !== a)
             break;
           t = h;
         }
         for (let h = I; h <= t; h++)
           E.add(h);
-        const e = {
+        const N = {
           start: { x: I, y: A },
           end: { x: t, y: A }
         };
         g.push({
           text: a,
-          range: e,
+          range: N,
           activate: (h) => {
             (h.ctrlKey || h.metaKey) && window.open(a, "_blank", "noopener,noreferrer");
           }
@@ -1499,10 +1499,10 @@ class BA {
         if (!t || t.getHyperlinkId() !== A)
           break;
         C = s, I = 0;
-        for (let e = a.length - 1; e >= 0; e--) {
-          const h = a.getCell(e);
+        for (let N = a.length - 1; N >= 0; N--) {
+          const h = a.getCell(N);
           if (!h || h.getHyperlinkId() !== A) {
-            I = e + 1;
+            I = N + 1;
             break;
           }
         }
@@ -1528,15 +1528,15 @@ class BA {
           const t = E.getLine(s);
           if (!t || t.length === 0)
             break;
-          const e = t.getCell(0);
-          if (!e || e.getHyperlinkId() !== A)
+          const N = t.getCell(0);
+          if (!N || N.getHyperlinkId() !== A)
             break;
           D = s, o = 0;
           for (let h = 0; h < t.length; h++) {
-            const N = t.getCell(h);
-            if (!N)
+            const e = t.getCell(h);
+            if (!e)
               break;
-            if (N.getHyperlinkId() !== A) {
+            if (e.getHyperlinkId() !== A) {
               o = h - 1;
               break;
             }
@@ -1653,9 +1653,9 @@ class z {
   put(A, Q, g, E, C, I, D) {
     if (this.cache.size >= u) {
       const t = u >> 2;
-      let e = 0;
+      let N = 0;
       for (const h of this.cache.keys()) {
-        if (e++ >= t)
+        if (N++ >= t)
           break;
         this.cache.delete(h);
       }
@@ -1775,7 +1775,7 @@ class EA {
         this.selectionManager.clearDirtySelectionRows();
       }
     }
-    const e = /* @__PURE__ */ new Set(), h = this.hoveredHyperlinkId !== this.previousHoveredHyperlinkId, N = JSON.stringify(this.hoveredLinkRange) !== JSON.stringify(this.previousHoveredLinkRange);
+    const N = /* @__PURE__ */ new Set(), h = this.hoveredHyperlinkId !== this.previousHoveredHyperlinkId, e = JSON.stringify(this.hoveredLinkRange) !== JSON.stringify(this.previousHoveredLinkRange);
     if (h) {
       for (let M = 0; M < D.rows; M++) {
         let c = null;
@@ -1792,25 +1792,25 @@ class EA {
         if (c) {
           for (const F of c)
             if (F.hyperlink_id === this.hoveredHyperlinkId || F.hyperlink_id === this.previousHoveredHyperlinkId) {
-              e.add(M);
+              N.add(M);
               break;
             }
         }
       }
       this.previousHoveredHyperlinkId = this.hoveredHyperlinkId;
     }
-    if (N) {
+    if (e) {
       if (this.previousHoveredLinkRange)
         for (let M = this.previousHoveredLinkRange.startY; M <= this.previousHoveredLinkRange.endY; M++)
-          e.add(M);
+          N.add(M);
       if (this.hoveredLinkRange)
         for (let M = this.hoveredLinkRange.startY; M <= this.hoveredLinkRange.endY; M++)
-          e.add(M);
+          N.add(M);
       this.previousHoveredLinkRange = this.hoveredLinkRange;
     }
     const k = /* @__PURE__ */ new Set();
     for (let M = 0; M < D.rows; M++)
-      (g > 0 ? !0 : Q || A.isRowDirty(M) || t.has(M) || e.has(M)) && (k.add(M), M > 0 && k.add(M - 1), M < D.rows - 1 && k.add(M + 1));
+      (g > 0 ? !0 : Q || A.isRowDirty(M) || t.has(M) || N.has(M)) && (k.add(M), M > 0 && k.add(M - 1), M < D.rows - 1 && k.add(M + 1));
     for (let M = 0; M < D.rows; M++) {
       if (!k.has(M))
         continue;
@@ -1882,23 +1882,23 @@ class EA {
     else if (o)
       this.ctx.fillStyle = this.theme.selectionForeground;
     else {
-      let t = A.fg_r, e = A.fg_g, h = A.fg_b;
-      A.flags & G.INVERSE && (t = A.bg_r, e = A.bg_g, h = A.bg_b), this.ctx.fillStyle = this.rgbToCSS(t, e, h);
+      let t = A.fg_r, N = A.fg_g, h = A.fg_b;
+      A.flags & G.INVERSE && (t = A.bg_r, N = A.bg_g, h = A.bg_b), this.ctx.fillStyle = this.rgbToCSS(t, N, h);
     }
     A.flags & G.FAINT && (this.ctx.globalAlpha = 0.5);
     let s;
     if (A.grapheme_len > 0 && ((a = this.currentBuffer) != null && a.getGraphemeString) ? s = this.currentBuffer.getGraphemeString(g, Q) : s = String.fromCodePoint(A.codepoint || 32), s === " ")
       A.flags & G.FAINT && (this.ctx.globalAlpha = 1);
     else {
-      const t = this.ctx.fillStyle, e = this.ctx.font;
+      const t = this.ctx.fillStyle, N = this.ctx.font;
       if (A.grapheme_len === 0 && !(A.flags & G.FAINT) && A.width === 1) {
-        const N = z.key(s, t, e);
-        let k = this.glyphCache.get(N);
+        const e = z.key(s, t, N);
+        let k = this.glyphCache.get(e);
         k || (k = this.glyphCache.put(
-          N,
+          e,
           s,
           t,
-          e,
+          N,
           this.metrics.width,
           this.metrics.height,
           this.metrics.baseline
@@ -1915,8 +1915,8 @@ class EA {
       this.ctx.strokeStyle = this.ctx.fillStyle, this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, t), this.ctx.lineTo(C + D, t), this.ctx.stroke();
     }
     if (A.hyperlink_id > 0 && A.hyperlink_id === this.hoveredHyperlinkId) {
-      const e = I + this.metrics.baseline + 2;
-      this.ctx.strokeStyle = "#4A90E2", this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, e), this.ctx.lineTo(C + D, e), this.ctx.stroke();
+      const N = I + this.metrics.baseline + 2;
+      this.ctx.strokeStyle = "#4A90E2", this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, N), this.ctx.lineTo(C + D, N), this.ctx.stroke();
     }
     if (this.hoveredLinkRange) {
       const t = this.hoveredLinkRange;
@@ -2028,7 +2028,7 @@ class EA {
     const C = this.scrollbarCanvas ?? this.canvas, I = this.scrollbarCtx ?? this.ctx, D = C.height / this.devicePixelRatio, o = C.width / this.devicePixelRatio;
     if (this.scrollbarCtx && (I.save(), I.setTransform(1, 0, 0, 1, 0, 0), I.clearRect(0, 0, C.width, C.height), I.restore()), E <= 0 || Q === 0)
       return;
-    const w = 8, s = o - w - 4, a = 4, t = D - a * 2, e = Q + g, h = Math.max(20, g / e * t), N = A / Q, k = a + (t - h) * (1 - N), U = A > 0 ? 0.45 : 0.25;
+    const w = 8, s = o - w - 4, a = 4, t = D - a * 2, N = Q + g, h = Math.max(20, g / N * t), e = A / Q, k = a + (t - h) * (1 - e), U = A > 0 ? 0.45 : 0.25;
     I.fillStyle = `rgba(128, 128, 128, ${U * E})`;
     const M = w / 2;
     I.beginPath(), I.moveTo(s + M, k), I.lineTo(s + w - M, k), I.arcTo(s + w, k, s + w, k + M, M), I.lineTo(s + w, k + h - M), I.arcTo(s + w, k + h, s + w - M, k + h, M), I.lineTo(s + M, k + h), I.arcTo(s, k + h, s, k + h - M, M), I.lineTo(s, k + M), I.arcTo(s, k, s + M, k, M), I.closePath(), I.fill();
@@ -2143,28 +2143,28 @@ const R = class l {
       if (D < C)
         o = this.wasmTerm.getScrollbackLine(D);
       else {
-        const e = D - C;
-        o = this.wasmTerm.getLine(e);
+        const N = D - C;
+        o = this.wasmTerm.getLine(N);
       }
       if (!o)
         continue;
       let w = -1;
       const s = D === Q ? A : 0, a = D === E ? g : o.length - 1;
       let t = "";
-      for (let e = s; e <= a; e++) {
-        const h = o[e];
+      for (let N = s; N <= a; N++) {
+        const h = o[N];
         if (h && h.codepoint !== 0) {
-          let N;
+          let e;
           if (h.grapheme_len > 0)
             if (D < C)
-              N = this.wasmTerm.getScrollbackGraphemeString(D, e);
+              e = this.wasmTerm.getScrollbackGraphemeString(D, N);
             else {
               const k = D - C;
-              N = this.wasmTerm.getGraphemeString(k, e);
+              e = this.wasmTerm.getGraphemeString(k, N);
             }
           else
-            N = String.fromCodePoint(h.codepoint);
-          t += N, N.trim() && (w = t.length);
+            e = String.fromCodePoint(h.codepoint);
+          t += e, e.trim() && (w = t.length);
         } else
           t += " ";
       }
@@ -2610,8 +2610,8 @@ class sA {
         if (D < a)
           w = o - a + D;
         else {
-          const e = D - a;
-          w = o + e;
+          const N = D - a;
+          w = o + N;
         }
       else
         w = o + D;
@@ -2646,11 +2646,11 @@ class sA {
       const C = this.canvas.getBoundingClientRect(), I = g.clientX - C.left, D = g.clientY - C.top, o = C.width, w = C.height, s = 8, a = o - s - 4, t = 4;
       if (I >= a && I <= a + s) {
         g.preventDefault(), g.stopPropagation(), g.stopImmediatePropagation();
-        const e = w - t * 2, h = this.rows, N = E + h, k = Math.max(20, h / N * e), U = this.viewportY / E, M = t + (e - k) * (1 - U);
+        const N = w - t * 2, h = this.rows, e = E + h, k = Math.max(20, h / e * N), U = this.viewportY / E, M = t + (N - k) * (1 - U);
         if (D >= M && D <= M + k)
           this.isDraggingScrollbar = !0, this.scrollbarDragStart = D, this.scrollbarDragStartViewportY = this.viewportY, this.canvas && (this.canvas.style.userSelect = "none", this.canvas.style.webkitUserSelect = "none");
         else {
-          const F = 1 - (D - t) / e, Y = Math.round(F * E);
+          const F = 1 - (D - t) / N, Y = Math.round(F * E);
           this.scrollToLine(Math.max(0, Math.min(E, Y)));
         }
       }
@@ -2715,11 +2715,7 @@ class sA {
    * Updates canvas size to match new font metrics and forces a full re-render
    */
   handleFontChange() {
-    if (!this.renderer || !this.wasmTerm || !this.canvas)
-      return;
-    this.selectionManager && this.selectionManager.clearSelection(), this.renderer.resize(this.cols, this.rows);
-    const A = this.renderer.getMetrics();
-    this.canvas.width = A.width * this.cols, this.canvas.height = A.height * this.rows, this.canvas.style.width = `${A.width * this.cols}px`, this.canvas.style.height = `${A.height * this.rows}px`, this.renderer.render(this.wasmTerm, !0, this.viewportY, this);
+    !this.renderer || !this.wasmTerm || !this.canvas || (this.selectionManager && this.selectionManager.clearSelection(), this.renderer.resize(this.cols, this.rows), this.renderer.render(this.wasmTerm, !0, this.viewportY, this));
   }
   /**
    * Parse a CSS color string to 0xRRGGBB format.
@@ -2911,14 +2907,19 @@ class sA {
     if (this.assertOpen(), !(A === this.cols && Q === this.rows)) {
       this.cancelRenderLoop();
       try {
-        this.cols = A, this.rows = Q, this.wasmTerm.resize(A, Q), this.renderer.resize(A, Q);
-        const g = this.renderer.getMetrics();
-        this.canvas.width = g.width * A, this.canvas.height = g.height * Q, this.canvas.style.width = `${g.width * A}px`, this.canvas.style.height = `${g.height * Q}px`, this.resizeEmitter.fire({ cols: A, rows: Q }), this.renderer.render(this.wasmTerm, !0, this.viewportY, this);
+        this.cols = A, this.rows = Q, this.wasmTerm.resize(A, Q), this.renderer.resize(A, Q), this.resizeEmitter.fire({ cols: A, rows: Q }), this.renderer.render(this.wasmTerm, !0, this.viewportY, this);
       } catch (g) {
         console.error("Terminal resize failed:", g);
       }
       this.flushWriteQueue(), this.startRenderLoop();
     }
+  }
+  /**
+   * Force a full redraw of the terminal canvas without changing dimensions.
+   * Useful after visibility changes where the canvas backing store may be stale.
+   */
+  forceRedraw() {
+    !this.renderer || !this.wasmTerm || this.renderer.render(this.wasmTerm, !0, this.viewportY, this, this.scrollbarOpacity);
   }
   /**
    * Clear terminal screen
@@ -3204,9 +3205,9 @@ class sA {
     let I = 0, D = null;
     const o = this.getViewportY(), w = Math.max(0, Math.floor(o));
     if (w > 0) {
-      const N = this.wasmTerm.getScrollbackLength();
+      const e = this.wasmTerm.getScrollbackLength();
       if (C < w) {
-        const k = N - w + C;
+        const k = e - w + C;
         D = this.wasmTerm.getScrollbackLine(k);
       } else {
         const k = C - w;
@@ -3219,35 +3220,35 @@ class sA {
     I !== s && this.renderer.setHoveredHyperlinkId(I);
     const a = this.wasmTerm.getScrollbackLength();
     let t;
-    const e = this.getViewportY(), h = Math.max(0, Math.floor(e));
+    const N = this.getViewportY(), h = Math.max(0, Math.floor(N));
     if (h > 0)
       if (C < h)
         t = a - h + C;
       else {
-        const N = C - h;
-        t = a + N;
+        const e = C - h;
+        t = a + e;
       }
     else
       t = a + C;
-    this.linkDetector.getLinkAt(g, t).then((N) => {
+    this.linkDetector.getLinkAt(g, t).then((e) => {
       var k, U, M, c;
-      if (N !== this.currentHoveredLink) {
-        (U = (k = this.currentHoveredLink) == null ? void 0 : k.hover) == null || U.call(k, !1), this.currentHoveredLink = N, (M = N == null ? void 0 : N.hover) == null || M.call(N, !0);
-        const F = N ? "pointer" : "text";
+      if (e !== this.currentHoveredLink) {
+        (U = (k = this.currentHoveredLink) == null ? void 0 : k.hover) == null || U.call(k, !1), this.currentHoveredLink = e, (M = e == null ? void 0 : e.hover) == null || M.call(e, !0);
+        const F = e ? "pointer" : "text";
         if (this.element && (this.element.style.cursor = F), this.canvas && (this.canvas.style.cursor = F), this.renderer)
-          if (N) {
-            const Y = ((c = this.wasmTerm) == null ? void 0 : c.getScrollbackLength()) || 0, j = this.getViewportY(), x = Math.max(0, Math.floor(j)), T = N.range.start.y - Y + x, d = N.range.end.y - Y + x;
+          if (e) {
+            const Y = ((c = this.wasmTerm) == null ? void 0 : c.getScrollbackLength()) || 0, j = this.getViewportY(), x = Math.max(0, Math.floor(j)), T = e.range.start.y - Y + x, d = e.range.end.y - Y + x;
             T < this.rows && d >= 0 ? this.renderer.setHoveredLinkRange({
-              startX: N.range.start.x,
+              startX: e.range.start.x,
               startY: Math.max(0, T),
-              endX: N.range.end.x,
+              endX: e.range.end.x,
               endY: Math.min(this.rows - 1, d)
             }) : this.renderer.setHoveredLinkRange(null);
           } else
             this.renderer.setHoveredLinkRange(null);
       }
-    }).catch((N) => {
-      console.warn("Link detection error:", N);
+    }).catch((e) => {
+      console.warn("Link detection error:", e);
     });
   }
   /**
@@ -3259,7 +3260,7 @@ class sA {
     const Q = this.wasmTerm.getScrollbackLength();
     if (Q === 0)
       return;
-    const g = this.canvas.getBoundingClientRect(), C = A.clientY - g.top - this.scrollbarDragStart, o = g.height - 4 * 2, w = this.rows, s = Q + w, a = Math.max(20, w / s * o), t = -C / (o - a), e = Math.round(t * Q), h = this.scrollbarDragStartViewportY + e;
+    const g = this.canvas.getBoundingClientRect(), C = A.clientY - g.top - this.scrollbarDragStart, o = g.height - 4 * 2, w = this.rows, s = Q + w, a = Math.max(20, w / s * o), t = -C / (o - a), N = Math.round(t * Q), h = this.scrollbarDragStartViewportY + N;
     this.scrollToLine(Math.max(0, Math.min(Q, h)));
   }
   /**
@@ -3432,8 +3433,8 @@ class tA {
     const C = window.getComputedStyle(E), I = Number.parseInt(C.getPropertyValue("padding-top")) || 0, D = Number.parseInt(C.getPropertyValue("padding-bottom")) || 0, o = Number.parseInt(C.getPropertyValue("padding-left")) || 0, w = Number.parseInt(C.getPropertyValue("padding-right")) || 0, s = E.clientWidth, a = E.clientHeight;
     if (s === 0 || a === 0)
       return;
-    const t = s - o - w - oA, e = a - I - D, h = Math.max(IA, Math.floor(t / g.width)), N = Math.max(DA, Math.floor(e / g.height));
-    return { cols: h, rows: N };
+    const t = s - o - w - oA, N = a - I - D, h = Math.max(IA, Math.floor(t / g.width)), e = Math.max(DA, Math.floor(N / g.height));
+    return { cols: h, rows: e };
   }
   /**
    * Observe the terminal's container for resize events

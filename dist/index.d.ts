@@ -1752,6 +1752,11 @@ export declare class Terminal implements ITerminalCore {
      */
     resize(cols: number, rows: number): void;
     /**
+     * Force a full redraw of the terminal canvas without changing dimensions.
+     * Useful after visibility changes where the canvas backing store may be stale.
+     */
+    forceRedraw(): void;
+    /**
      * Clear terminal screen
      */
     clear(): void;
