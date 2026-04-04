@@ -976,11 +976,6 @@ export class CanvasRenderer {
     const scrollbarPadding = 4;
     const scrollbarTrackHeight = canvasHeight - scrollbarPadding * 2;
 
-    // Always clear the scrollbar area first (fixes ghosting when fading out)
-    ctx.clearRect(scrollbarX - 2, 0, scrollbarWidth + 6, canvasHeight);
-    ctx.fillStyle = this.theme.background;
-    ctx.fillRect(scrollbarX - 2, 0, scrollbarWidth + 6, canvasHeight);
-
     // Don't draw scrollbar if fully transparent or no scrollback
     if (opacity <= 0 || scrollbackLength === 0) return;
 
@@ -992,15 +987,27 @@ export class CanvasRenderer {
     const scrollPosition = viewportY / scrollbackLength; // 0 to 1
     const thumbY = scrollbarPadding + (scrollbarTrackHeight - thumbHeight) * (1 - scrollPosition);
 
-    // Draw scrollbar track (subtle background) with opacity
-    ctx.fillStyle = `rgba(128, 128, 128, ${0.1 * opacity})`;
-    ctx.fillRect(scrollbarX, scrollbarPadding, scrollbarWidth, scrollbarTrackHeight);
-
-    // Draw scrollbar thumb with opacity
-    const isScrolled = viewportY > 0;
-    const baseOpacity = isScrolled ? 0.5 : 0.3;
+    // Draw scrollbar thumb as a translucent overlay (no track background so
+    // text underneath stays readable).
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    const baseOpacity = viewportY > 0 ? 0.45 : 0.25;
     ctx.fillStyle = `rgba(128, 128, 128, ${baseOpacity * opacity})`;
-    ctx.fillRect(scrollbarX, thumbY, scrollbarWidth, thumbHeight);
+    // Use rounded rect for a modern scrollbar appearance
+    const radius = scrollbarWidth / 2;
+    ctx.beginPath();
+    ctx.moveTo(scrollbarX + radius, thumbY);
+    ctx.lineTo(scrollbarX + scrollbarWidth - radius, thumbY);
+    ctx.arcTo(scrollbarX + scrollbarWidth, thumbY, scrollbarX + scrollbarWidth, thumbY + radius, radius);
+    ctx.lineTo(scrollbarX + scrollbarWidth, thumbY + thumbHeight - radius);
+    ctx.arcTo(scrollbarX + scrollbarWidth, thumbY + thumbHeight, scrollbarX + scrollbarWidth - radius, thumbY + thumbHeight, radius);
+    ctx.lineTo(scrollbarX + radius, thumbY + thumbHeight);
+    ctx.arcTo(scrollbarX, thumbY + thumbHeight, scrollbarX, thumbY + thumbHeight - radius, radius);
+    ctx.lineTo(scrollbarX, thumbY + radius);
+    ctx.arcTo(scrollbarX, thumbY, scrollbarX + radius, thumbY, radius);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
   }
   public getMetrics(): FontMetrics {
     return { ...this.metrics };

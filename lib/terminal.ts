@@ -589,10 +589,9 @@ export class Terminal implements ITerminalCore {
     // Invalidate link cache (content changed)
     this.linkDetector?.invalidateCache();
 
-    // Phase 2: Auto-scroll to bottom on new output (xterm.js behavior)
-    if (this.viewportY !== 0) {
-      this.scrollToBottom();
-    }
+    // Do NOT auto-scroll to bottom when the user has scrolled up.
+    // viewportY > 0 means the user deliberately scrolled into history;
+    // yanking them back on every write is disorienting.
 
     // Check for title changes (OSC 0, 1, 2 sequences)
     // This is a simplified implementation - Ghostty WASM may provide this
