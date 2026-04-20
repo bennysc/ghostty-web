@@ -197,8 +197,13 @@ export class InputHandler {
   private isComposing = false;
   private isDisposed = false;
   private mouseButtonsPressed = 0; // Track which buttons are pressed for motion reporting
-  private lastKeyDownData: string | null = null;
-  private lastKeyDownTime = 0;
+  // Bounded queue of recent keydown-originated data waiting to be matched by a
+  // following `beforeinput` event. A single-slot `lastKeyDownData` field loses
+  // entries at high typing rates (e.g. ~10–20 keys/s from automation), which
+  // causes `beforeinput` to fail to dedupe and fire a duplicate `onDataCallback`,
+  // producing transposed/duplicated characters at the PTY. Using a bounded
+  // queue preserves the original dedupe intent while tolerating rapid events.
+  private recentKeyDowns: Array<{ data: string; at: number }> = [];
   private lastPasteData: string | null = null;
   private lastPasteTime = 0;
   private lastPasteSource: 'paste' | 'beforeinput' | null = null;
@@ -920,11 +925,32 @@ export class InputHandler {
   }
 
   /**
-   * Record keydown data for beforeinput de-duplication
+   * Record keydown data for beforeinput de-duplication.
+   *
+   * Pushes into a bounded FIFO queue and prunes entries older than
+   * BEFORE_INPUT_IGNORE_MS so the queue stays bounded by the effective
+   * keydown rate over the dedupe window.
    */
   private recordKeyDownData(data: string): void {
-    this.lastKeyDownData = data;
-    this.lastKeyDownTime = this.getNow();
+    const now = this.getNow();
+    this.pruneRecentKeyDowns(now);
+    this.recentKeyDowns.push({ data, at: now });
+  }
+
+  /**
+   * Drop any recorded keydown entries older than the dedupe window.
+   */
+  private pruneRecentKeyDowns(now: number): void {
+    const cutoff = now - InputHandler.BEFORE_INPUT_IGNORE_MS;
+    // Entries are appended in time order, so we can drop from the front.
+    let drop = 0;
+    for (const entry of this.recentKeyDowns) {
+      if (entry.at >= cutoff) break;
+      drop++;
+    }
+    if (drop > 0) {
+      this.recentKeyDowns.splice(0, drop);
+    }
   }
 
   /**
@@ -937,18 +963,25 @@ export class InputHandler {
   }
 
   /**
-   * Check if beforeinput should be ignored due to a recent keydown
+   * Check if beforeinput should be ignored due to a recent keydown.
+   *
+   * Consumes (removes) the first matching entry from the recent-keydown
+   * queue so each keydown can only dedupe a single beforeinput. Without this,
+   * a stale entry could dedupe an unrelated later beforeinput and swallow a
+   * real keystroke.
    */
   private shouldIgnoreBeforeInput(data: string): boolean {
-    if (!this.lastKeyDownData) {
+    const now = this.getNow();
+    this.pruneRecentKeyDowns(now);
+    if (this.recentKeyDowns.length === 0) {
       return false;
     }
-    const now = this.getNow();
-    const isDuplicate =
-      now - this.lastKeyDownTime < InputHandler.BEFORE_INPUT_IGNORE_MS &&
-      this.lastKeyDownData === data;
-    this.lastKeyDownData = null;
-    return isDuplicate;
+    const idx = this.recentKeyDowns.findIndex((entry) => entry.data === data);
+    if (idx === -1) {
+      return false;
+    }
+    this.recentKeyDowns.splice(idx, 1);
+    return true;
   }
 
   /**

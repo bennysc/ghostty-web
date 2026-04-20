@@ -89,8 +89,8 @@ class P {
       throw new Error(`Failed to create key event: ${g}`);
     const E = new DataView(this.exports.memory.buffer), C = E.getUint32(Q, !0);
     if (this.exports.ghostty_wasm_free_opaque(Q), this.exports.ghostty_key_event_set_action(C, A.action), this.exports.ghostty_key_event_set_key(C, A.key), this.exports.ghostty_key_event_set_mods(C, A.mods), A.utf8) {
-      const N = new TextEncoder().encode(A.utf8), h = this.exports.ghostty_wasm_alloc_u8_array(N.length);
-      new Uint8Array(this.exports.memory.buffer).set(N, h), this.exports.ghostty_key_event_set_utf8(C, h, N.length), this.exports.ghostty_wasm_free_u8_array(h, N.length);
+      const e = new TextEncoder().encode(A.utf8), h = this.exports.ghostty_wasm_alloc_u8_array(e.length);
+      new Uint8Array(this.exports.memory.buffer).set(e, h), this.exports.ghostty_key_event_set_utf8(C, h, e.length), this.exports.ghostty_wasm_free_u8_array(h, e.length);
     }
     const I = 32, D = this.exports.ghostty_wasm_alloc_u8_array(I), o = this.exports.ghostty_wasm_alloc_usize(), w = this.exports.ghostty_key_encoder_encode(
       this.encoder,
@@ -870,7 +870,7 @@ const $ = {
    * @param mouseConfig - Optional mouse tracking configuration
    */
   constructor(A, Q, g, E, C, I, D, o, w, s) {
-    this.keydownListener = null, this.keypressListener = null, this.pasteListener = null, this.beforeInputListener = null, this.compositionStartListener = null, this.compositionUpdateListener = null, this.compositionEndListener = null, this.mousedownListener = null, this.mouseupListener = null, this.mousemoveListener = null, this.wheelListener = null, this.isComposing = !1, this.isDisposed = !1, this.mouseButtonsPressed = 0, this.lastKeyDownData = null, this.lastKeyDownTime = 0, this.lastPasteData = null, this.lastPasteTime = 0, this.lastPasteSource = null, this.lastCompositionData = null, this.lastCompositionTime = 0, this.lastBeforeInputData = null, this.lastBeforeInputTime = 0, this.encoder = A.createKeyEncoder(), this.container = Q, this.inputElement = w, this.onDataCallback = g, this.onBellCallback = E, this.onKeyCallback = C, this.customKeyEventHandler = I, this.getModeCallback = D, this.onCopyCallback = o, this.mouseConfig = s, this.attach();
+    this.keydownListener = null, this.keypressListener = null, this.pasteListener = null, this.beforeInputListener = null, this.compositionStartListener = null, this.compositionUpdateListener = null, this.compositionEndListener = null, this.mousedownListener = null, this.mouseupListener = null, this.mousemoveListener = null, this.wheelListener = null, this.isComposing = !1, this.isDisposed = !1, this.mouseButtonsPressed = 0, this.recentKeyDowns = [], this.lastPasteData = null, this.lastPasteTime = 0, this.lastPasteSource = null, this.lastCompositionData = null, this.lastCompositionTime = 0, this.lastBeforeInputData = null, this.lastBeforeInputTime = 0, this.encoder = A.createKeyEncoder(), this.container = Q, this.inputElement = w, this.onDataCallback = g, this.onBellCallback = E, this.onKeyCallback = C, this.customKeyEventHandler = I, this.getModeCallback = D, this.onCopyCallback = o, this.mouseConfig = s, this.attach();
   }
   /**
    * Set custom key event handler (for runtime updates)
@@ -1251,10 +1251,28 @@ const $ = {
     ((g = this.getModeCallback) == null ? void 0 : g.call(this, 2004)) ?? !1 ? this.onDataCallback("\x1B[200~" + A + "\x1B[201~") : this.onDataCallback(A);
   }
   /**
-   * Record keydown data for beforeinput de-duplication
+   * Record keydown data for beforeinput de-duplication.
+   *
+   * Pushes into a bounded FIFO queue and prunes entries older than
+   * BEFORE_INPUT_IGNORE_MS so the queue stays bounded by the effective
+   * keydown rate over the dedupe window.
    */
   recordKeyDownData(A) {
-    this.lastKeyDownData = A, this.lastKeyDownTime = this.getNow();
+    const Q = this.getNow();
+    this.pruneRecentKeyDowns(Q), this.recentKeyDowns.push({ data: A, at: Q });
+  }
+  /**
+   * Drop any recorded keydown entries older than the dedupe window.
+   */
+  pruneRecentKeyDowns(A) {
+    const Q = A - y.BEFORE_INPUT_IGNORE_MS;
+    let g = 0;
+    for (const E of this.recentKeyDowns) {
+      if (E.at >= Q)
+        break;
+      g++;
+    }
+    g > 0 && this.recentKeyDowns.splice(0, g);
   }
   /**
    * Record paste data for beforeinput de-duplication
@@ -1263,13 +1281,19 @@ const $ = {
     this.lastPasteData = A, this.lastPasteTime = this.getNow(), this.lastPasteSource = Q;
   }
   /**
-   * Check if beforeinput should be ignored due to a recent keydown
+   * Check if beforeinput should be ignored due to a recent keydown.
+   *
+   * Consumes (removes) the first matching entry from the recent-keydown
+   * queue so each keydown can only dedupe a single beforeinput. Without this,
+   * a stale entry could dedupe an unrelated later beforeinput and swallow a
+   * real keystroke.
    */
   shouldIgnoreBeforeInput(A) {
-    if (!this.lastKeyDownData)
+    const Q = this.getNow();
+    if (this.pruneRecentKeyDowns(Q), this.recentKeyDowns.length === 0)
       return !1;
-    const g = this.getNow() - this.lastKeyDownTime < y.BEFORE_INPUT_IGNORE_MS && this.lastKeyDownData === A;
-    return this.lastKeyDownData = null, g;
+    const g = this.recentKeyDowns.findIndex((E) => E.data === A);
+    return g === -1 ? !1 : (this.recentKeyDowns.splice(g, 1), !0);
   }
   /**
    * Check if beforeinput text should be ignored due to a recent composition end
@@ -1451,20 +1475,20 @@ class BA {
       if (s < 0 ? a = this.terminal.wasmTerm.getScrollbackHyperlinkUri(A, I) : a = this.terminal.wasmTerm.getHyperlinkUri(s, I), a) {
         let t = I;
         for (let h = I + 1; h < C.length; h++) {
-          const e = C.getCell(h);
-          if (!e || e.getHyperlinkId() === 0 || (s < 0 ? this.terminal.wasmTerm.getScrollbackHyperlinkUri(A, h) : this.terminal.wasmTerm.getHyperlinkUri(s, h)) !== a)
+          const N = C.getCell(h);
+          if (!N || N.getHyperlinkId() === 0 || (s < 0 ? this.terminal.wasmTerm.getScrollbackHyperlinkUri(A, h) : this.terminal.wasmTerm.getHyperlinkUri(s, h)) !== a)
             break;
           t = h;
         }
         for (let h = I; h <= t; h++)
           E.add(h);
-        const N = {
+        const e = {
           start: { x: I, y: A },
           end: { x: t, y: A }
         };
         g.push({
           text: a,
-          range: N,
+          range: e,
           activate: (h) => {
             (h.ctrlKey || h.metaKey) && window.open(a, "_blank", "noopener,noreferrer");
           }
@@ -1499,10 +1523,10 @@ class BA {
         if (!t || t.getHyperlinkId() !== A)
           break;
         C = s, I = 0;
-        for (let N = a.length - 1; N >= 0; N--) {
-          const h = a.getCell(N);
+        for (let e = a.length - 1; e >= 0; e--) {
+          const h = a.getCell(e);
           if (!h || h.getHyperlinkId() !== A) {
-            I = N + 1;
+            I = e + 1;
             break;
           }
         }
@@ -1528,15 +1552,15 @@ class BA {
           const t = E.getLine(s);
           if (!t || t.length === 0)
             break;
-          const N = t.getCell(0);
-          if (!N || N.getHyperlinkId() !== A)
+          const e = t.getCell(0);
+          if (!e || e.getHyperlinkId() !== A)
             break;
           D = s, o = 0;
           for (let h = 0; h < t.length; h++) {
-            const e = t.getCell(h);
-            if (!e)
+            const N = t.getCell(h);
+            if (!N)
               break;
-            if (e.getHyperlinkId() !== A) {
+            if (N.getHyperlinkId() !== A) {
               o = h - 1;
               break;
             }
@@ -1653,9 +1677,9 @@ class z {
   put(A, Q, g, E, C, I, D) {
     if (this.cache.size >= u) {
       const t = u >> 2;
-      let N = 0;
+      let e = 0;
       for (const h of this.cache.keys()) {
-        if (N++ >= t)
+        if (e++ >= t)
           break;
         this.cache.delete(h);
       }
@@ -1775,7 +1799,7 @@ class EA {
         this.selectionManager.clearDirtySelectionRows();
       }
     }
-    const N = /* @__PURE__ */ new Set(), h = this.hoveredHyperlinkId !== this.previousHoveredHyperlinkId, e = JSON.stringify(this.hoveredLinkRange) !== JSON.stringify(this.previousHoveredLinkRange);
+    const e = /* @__PURE__ */ new Set(), h = this.hoveredHyperlinkId !== this.previousHoveredHyperlinkId, N = JSON.stringify(this.hoveredLinkRange) !== JSON.stringify(this.previousHoveredLinkRange);
     if (h) {
       for (let M = 0; M < D.rows; M++) {
         let c = null;
@@ -1792,25 +1816,25 @@ class EA {
         if (c) {
           for (const F of c)
             if (F.hyperlink_id === this.hoveredHyperlinkId || F.hyperlink_id === this.previousHoveredHyperlinkId) {
-              N.add(M);
+              e.add(M);
               break;
             }
         }
       }
       this.previousHoveredHyperlinkId = this.hoveredHyperlinkId;
     }
-    if (e) {
+    if (N) {
       if (this.previousHoveredLinkRange)
         for (let M = this.previousHoveredLinkRange.startY; M <= this.previousHoveredLinkRange.endY; M++)
-          N.add(M);
+          e.add(M);
       if (this.hoveredLinkRange)
         for (let M = this.hoveredLinkRange.startY; M <= this.hoveredLinkRange.endY; M++)
-          N.add(M);
+          e.add(M);
       this.previousHoveredLinkRange = this.hoveredLinkRange;
     }
     const k = /* @__PURE__ */ new Set();
     for (let M = 0; M < D.rows; M++)
-      (g > 0 ? !0 : Q || A.isRowDirty(M) || t.has(M) || N.has(M)) && (k.add(M), M > 0 && k.add(M - 1), M < D.rows - 1 && k.add(M + 1));
+      (g > 0 ? !0 : Q || A.isRowDirty(M) || t.has(M) || e.has(M)) && (k.add(M), M > 0 && k.add(M - 1), M < D.rows - 1 && k.add(M + 1));
     for (let M = 0; M < D.rows; M++) {
       if (!k.has(M))
         continue;
@@ -1882,23 +1906,23 @@ class EA {
     else if (o)
       this.ctx.fillStyle = this.theme.selectionForeground;
     else {
-      let t = A.fg_r, N = A.fg_g, h = A.fg_b;
-      A.flags & G.INVERSE && (t = A.bg_r, N = A.bg_g, h = A.bg_b), this.ctx.fillStyle = this.rgbToCSS(t, N, h);
+      let t = A.fg_r, e = A.fg_g, h = A.fg_b;
+      A.flags & G.INVERSE && (t = A.bg_r, e = A.bg_g, h = A.bg_b), this.ctx.fillStyle = this.rgbToCSS(t, e, h);
     }
     A.flags & G.FAINT && (this.ctx.globalAlpha = 0.5);
     let s;
     if (A.grapheme_len > 0 && ((a = this.currentBuffer) != null && a.getGraphemeString) ? s = this.currentBuffer.getGraphemeString(g, Q) : s = String.fromCodePoint(A.codepoint || 32), s === " ")
       A.flags & G.FAINT && (this.ctx.globalAlpha = 1);
     else {
-      const t = this.ctx.fillStyle, N = this.ctx.font;
+      const t = this.ctx.fillStyle, e = this.ctx.font;
       if (A.grapheme_len === 0 && !(A.flags & G.FAINT) && A.width === 1) {
-        const e = z.key(s, t, N);
-        let k = this.glyphCache.get(e);
+        const N = z.key(s, t, e);
+        let k = this.glyphCache.get(N);
         k || (k = this.glyphCache.put(
-          e,
+          N,
           s,
           t,
-          N,
+          e,
           this.metrics.width,
           this.metrics.height,
           this.metrics.baseline
@@ -1915,8 +1939,8 @@ class EA {
       this.ctx.strokeStyle = this.ctx.fillStyle, this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, t), this.ctx.lineTo(C + D, t), this.ctx.stroke();
     }
     if (A.hyperlink_id > 0 && A.hyperlink_id === this.hoveredHyperlinkId) {
-      const N = I + this.metrics.baseline + 2;
-      this.ctx.strokeStyle = "#4A90E2", this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, N), this.ctx.lineTo(C + D, N), this.ctx.stroke();
+      const e = I + this.metrics.baseline + 2;
+      this.ctx.strokeStyle = "#4A90E2", this.ctx.lineWidth = 1, this.ctx.beginPath(), this.ctx.moveTo(C, e), this.ctx.lineTo(C + D, e), this.ctx.stroke();
     }
     if (this.hoveredLinkRange) {
       const t = this.hoveredLinkRange;
@@ -2028,7 +2052,7 @@ class EA {
     const C = this.scrollbarCanvas ?? this.canvas, I = this.scrollbarCtx ?? this.ctx, D = C.height / this.devicePixelRatio, o = C.width / this.devicePixelRatio;
     if (this.scrollbarCtx && (I.save(), I.setTransform(1, 0, 0, 1, 0, 0), I.clearRect(0, 0, C.width, C.height), I.restore()), E <= 0 || Q === 0)
       return;
-    const w = 8, s = o - w - 4, a = 4, t = D - a * 2, N = Q + g, h = Math.max(20, g / N * t), e = A / Q, k = a + (t - h) * (1 - e), U = A > 0 ? 0.45 : 0.25;
+    const w = 8, s = o - w - 4, a = 4, t = D - a * 2, e = Q + g, h = Math.max(20, g / e * t), N = A / Q, k = a + (t - h) * (1 - N), U = A > 0 ? 0.45 : 0.25;
     I.fillStyle = `rgba(128, 128, 128, ${U * E})`;
     const M = w / 2;
     I.beginPath(), I.moveTo(s + M, k), I.lineTo(s + w - M, k), I.arcTo(s + w, k, s + w, k + M, M), I.lineTo(s + w, k + h - M), I.arcTo(s + w, k + h, s + w - M, k + h, M), I.lineTo(s + M, k + h), I.arcTo(s, k + h, s, k + h - M, M), I.lineTo(s, k + M), I.arcTo(s, k, s + M, k, M), I.closePath(), I.fill();
@@ -2143,28 +2167,28 @@ const R = class l {
       if (D < C)
         o = this.wasmTerm.getScrollbackLine(D);
       else {
-        const N = D - C;
-        o = this.wasmTerm.getLine(N);
+        const e = D - C;
+        o = this.wasmTerm.getLine(e);
       }
       if (!o)
         continue;
       let w = -1;
       const s = D === Q ? A : 0, a = D === E ? g : o.length - 1;
       let t = "";
-      for (let N = s; N <= a; N++) {
-        const h = o[N];
+      for (let e = s; e <= a; e++) {
+        const h = o[e];
         if (h && h.codepoint !== 0) {
-          let e;
+          let N;
           if (h.grapheme_len > 0)
             if (D < C)
-              e = this.wasmTerm.getScrollbackGraphemeString(D, N);
+              N = this.wasmTerm.getScrollbackGraphemeString(D, e);
             else {
               const k = D - C;
-              e = this.wasmTerm.getGraphemeString(k, N);
+              N = this.wasmTerm.getGraphemeString(k, e);
             }
           else
-            e = String.fromCodePoint(h.codepoint);
-          t += e, e.trim() && (w = t.length);
+            N = String.fromCodePoint(h.codepoint);
+          t += N, N.trim() && (w = t.length);
         } else
           t += " ";
       }
@@ -2610,8 +2634,8 @@ class sA {
         if (D < a)
           w = o - a + D;
         else {
-          const N = D - a;
-          w = o + N;
+          const e = D - a;
+          w = o + e;
         }
       else
         w = o + D;
@@ -2646,11 +2670,11 @@ class sA {
       const C = this.canvas.getBoundingClientRect(), I = g.clientX - C.left, D = g.clientY - C.top, o = C.width, w = C.height, s = 8, a = o - s - 4, t = 4;
       if (I >= a && I <= a + s) {
         g.preventDefault(), g.stopPropagation(), g.stopImmediatePropagation();
-        const N = w - t * 2, h = this.rows, e = E + h, k = Math.max(20, h / e * N), U = this.viewportY / E, M = t + (N - k) * (1 - U);
+        const e = w - t * 2, h = this.rows, N = E + h, k = Math.max(20, h / N * e), U = this.viewportY / E, M = t + (e - k) * (1 - U);
         if (D >= M && D <= M + k)
           this.isDraggingScrollbar = !0, this.scrollbarDragStart = D, this.scrollbarDragStartViewportY = this.viewportY, this.canvas && (this.canvas.style.userSelect = "none", this.canvas.style.webkitUserSelect = "none");
         else {
-          const F = 1 - (D - t) / N, Y = Math.round(F * E);
+          const F = 1 - (D - t) / e, Y = Math.round(F * E);
           this.scrollToLine(Math.max(0, Math.min(E, Y)));
         }
       }
@@ -3205,9 +3229,9 @@ class sA {
     let I = 0, D = null;
     const o = this.getViewportY(), w = Math.max(0, Math.floor(o));
     if (w > 0) {
-      const e = this.wasmTerm.getScrollbackLength();
+      const N = this.wasmTerm.getScrollbackLength();
       if (C < w) {
-        const k = e - w + C;
+        const k = N - w + C;
         D = this.wasmTerm.getScrollbackLine(k);
       } else {
         const k = C - w;
@@ -3220,35 +3244,35 @@ class sA {
     I !== s && this.renderer.setHoveredHyperlinkId(I);
     const a = this.wasmTerm.getScrollbackLength();
     let t;
-    const N = this.getViewportY(), h = Math.max(0, Math.floor(N));
+    const e = this.getViewportY(), h = Math.max(0, Math.floor(e));
     if (h > 0)
       if (C < h)
         t = a - h + C;
       else {
-        const e = C - h;
-        t = a + e;
+        const N = C - h;
+        t = a + N;
       }
     else
       t = a + C;
-    this.linkDetector.getLinkAt(g, t).then((e) => {
+    this.linkDetector.getLinkAt(g, t).then((N) => {
       var k, U, M, c;
-      if (e !== this.currentHoveredLink) {
-        (U = (k = this.currentHoveredLink) == null ? void 0 : k.hover) == null || U.call(k, !1), this.currentHoveredLink = e, (M = e == null ? void 0 : e.hover) == null || M.call(e, !0);
-        const F = e ? "pointer" : "text";
+      if (N !== this.currentHoveredLink) {
+        (U = (k = this.currentHoveredLink) == null ? void 0 : k.hover) == null || U.call(k, !1), this.currentHoveredLink = N, (M = N == null ? void 0 : N.hover) == null || M.call(N, !0);
+        const F = N ? "pointer" : "text";
         if (this.element && (this.element.style.cursor = F), this.canvas && (this.canvas.style.cursor = F), this.renderer)
-          if (e) {
-            const Y = ((c = this.wasmTerm) == null ? void 0 : c.getScrollbackLength()) || 0, j = this.getViewportY(), x = Math.max(0, Math.floor(j)), T = e.range.start.y - Y + x, d = e.range.end.y - Y + x;
+          if (N) {
+            const Y = ((c = this.wasmTerm) == null ? void 0 : c.getScrollbackLength()) || 0, j = this.getViewportY(), x = Math.max(0, Math.floor(j)), T = N.range.start.y - Y + x, d = N.range.end.y - Y + x;
             T < this.rows && d >= 0 ? this.renderer.setHoveredLinkRange({
-              startX: e.range.start.x,
+              startX: N.range.start.x,
               startY: Math.max(0, T),
-              endX: e.range.end.x,
+              endX: N.range.end.x,
               endY: Math.min(this.rows - 1, d)
             }) : this.renderer.setHoveredLinkRange(null);
           } else
             this.renderer.setHoveredLinkRange(null);
       }
-    }).catch((e) => {
-      console.warn("Link detection error:", e);
+    }).catch((N) => {
+      console.warn("Link detection error:", N);
     });
   }
   /**
@@ -3260,7 +3284,7 @@ class sA {
     const Q = this.wasmTerm.getScrollbackLength();
     if (Q === 0)
       return;
-    const g = this.canvas.getBoundingClientRect(), C = A.clientY - g.top - this.scrollbarDragStart, o = g.height - 4 * 2, w = this.rows, s = Q + w, a = Math.max(20, w / s * o), t = -C / (o - a), N = Math.round(t * Q), h = this.scrollbarDragStartViewportY + N;
+    const g = this.canvas.getBoundingClientRect(), C = A.clientY - g.top - this.scrollbarDragStart, o = g.height - 4 * 2, w = this.rows, s = Q + w, a = Math.max(20, w / s * o), t = -C / (o - a), e = Math.round(t * Q), h = this.scrollbarDragStartViewportY + e;
     this.scrollToLine(Math.max(0, Math.min(Q, h)));
   }
   /**
@@ -3433,8 +3457,8 @@ class tA {
     const C = window.getComputedStyle(E), I = Number.parseInt(C.getPropertyValue("padding-top")) || 0, D = Number.parseInt(C.getPropertyValue("padding-bottom")) || 0, o = Number.parseInt(C.getPropertyValue("padding-left")) || 0, w = Number.parseInt(C.getPropertyValue("padding-right")) || 0, s = E.clientWidth, a = E.clientHeight;
     if (s === 0 || a === 0)
       return;
-    const t = s - o - w - oA, N = a - I - D, h = Math.max(IA, Math.floor(t / g.width)), e = Math.max(DA, Math.floor(N / g.height));
-    return { cols: h, rows: e };
+    const t = s - o - w - oA, e = a - I - D, h = Math.max(IA, Math.floor(t / g.width)), N = Math.max(DA, Math.floor(e / g.height));
+    return { cols: h, rows: N };
   }
   /**
    * Observe the terminal's container for resize events

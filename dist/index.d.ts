@@ -747,8 +747,7 @@ export declare class InputHandler {
     private isComposing;
     private isDisposed;
     private mouseButtonsPressed;
-    private lastKeyDownData;
-    private lastKeyDownTime;
+    private recentKeyDowns;
     private lastPasteData;
     private lastPasteTime;
     private lastPasteSource;
@@ -871,15 +870,28 @@ export declare class InputHandler {
      */
     private emitPasteData;
     /**
-     * Record keydown data for beforeinput de-duplication
+     * Record keydown data for beforeinput de-duplication.
+     *
+     * Pushes into a bounded FIFO queue and prunes entries older than
+     * BEFORE_INPUT_IGNORE_MS so the queue stays bounded by the effective
+     * keydown rate over the dedupe window.
      */
     private recordKeyDownData;
+    /**
+     * Drop any recorded keydown entries older than the dedupe window.
+     */
+    private pruneRecentKeyDowns;
     /**
      * Record paste data for beforeinput de-duplication
      */
     private recordPasteData;
     /**
-     * Check if beforeinput should be ignored due to a recent keydown
+     * Check if beforeinput should be ignored due to a recent keydown.
+     *
+     * Consumes (removes) the first matching entry from the recent-keydown
+     * queue so each keydown can only dedupe a single beforeinput. Without this,
+     * a stale entry could dedupe an unrelated later beforeinput and swallow a
+     * real keystroke.
      */
     private shouldIgnoreBeforeInput;
     /**
